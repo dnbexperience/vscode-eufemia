@@ -1,0 +1,182 @@
+{
+  "name": "dnb-eufemia",
+  "displayName": "eufemia",
+  "description": "DNB Eufemia Design System Extension",
+  "version": "0.0.1",
+  "publisher": "dnbexperience",
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "licenseUrl": "LICENSE",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:dnb-eufemia.helloWorld",
+    "onLanguage:css",
+    "onLanguage:scss",
+    "onLanguage:sass",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dnb-eufemia.helloWorld",
+        "title": "Hello World 2"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "eufemia configuration",
+      "properties": {
+        "eufemia.rootFontSize": {
+          "type": "number",
+          "default": 16,
+          "description": "%eufemia.rootFontSize%"
+        },
+        "eufemia.fixedDigits": {
+          "type": "number",
+          "default": 4,
+          "description": "%eufemia.fixedDigits%"
+        },
+        "eufemia.autoRemovePrefixZero": {
+          "type": "boolean",
+          "default": true,
+          "description": "%eufemia.autoRemovePrefixZero%"
+        },
+        "eufemia.ingoresViaCommand": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "%eufemia.ingoresViaCommand%"
+        },
+        "eufemia.addMark": {
+          "type": "boolean",
+          "default": false,
+          "description": "%eufemia.addMark%"
+        },
+        "eufemia.hover": {
+          "type": "string",
+          "enum": [
+            "disabled",
+            "always",
+            "onlyMark"
+          ],
+          "default": "onlyMark",
+          "markdownEnumDescriptions": [
+            "%eufemia.hover.disabled%",
+            "%eufemia.hover.always%",
+            "%eufemia.hover.onlyMark%"
+          ],
+          "description": "%eufemia.hover%"
+        },
+        "eufemia.ingores": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "%eufemia.ingores%"
+        },
+        "eufemia.languages": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "%eufemia.languages%"
+        },
+        "eufemia.currentLine": {
+          "type": "string",
+          "enum": [
+            "disabled",
+            "show"
+          ],
+          "default": "show",
+          "markdownEnumDescriptions": [
+            "%eufemia.currentLine.disabled%",
+            "%eufemia.currentLine.show%"
+          ],
+          "description": "%eufemia.currentLine%"
+        },
+        "eufemia.remHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "%eufemia.remHover%"
+        },
+        "eufemia.vw": {
+          "type": "boolean",
+          "default": false,
+          "description": "%eufemia.vw%"
+        },
+        "eufemia.vwHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "%eufemia.vwHover%"
+        },
+        "eufemia.vwDesign": {
+          "type": "number",
+          "default": 750,
+          "description": "%eufemia.vwDesign%"
+        }
+      }
+    },
+    "colors": [
+      {
+        "id": "extension.eufemia.trailingLineBackgroundColor",
+        "description": "Specifies the background color of the blame annotation for the current line",
+        "defaults": {
+          "dark": "#00000000",
+          "light": "#00000000",
+          "highContrast": "#00000000"
+        }
+      },
+      {
+        "id": "extension.eufemia.trailingLineForegroundColor",
+        "description": "Specifies the foreground color of the blame annotation for the current line",
+        "defaults": {
+          "dark": "#99999970",
+          "light": "#99999970",
+          "highContrast": "#99999999"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "dependencies": {
+    "@dnb/eufemia": "^9.45.0",
+    "jsonc-parser": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.9.3",
+    "vscode-nls": "^5.2.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
+  }
+}
