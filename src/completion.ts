@@ -8,16 +8,18 @@ import {
   TextDocument,
 } from 'vscode'
 import { cog, isIngore } from './config'
-import { CssRemProcess } from './process'
+import { CSSProcessor } from './process'
 
 export default class implements CompletionItemProvider {
-  constructor(private lan: string, private process: CssRemProcess) {}
+  constructor(private lan: string, private process: CSSProcessor) {}
 
   provideCompletionItems(
     document: TextDocument,
     position: Position
   ): Thenable<CompletionItem[]> {
-    if (isIngore(document.uri)) return Promise.resolve([])
+    if (isIngore(document.uri)) {
+      return Promise.resolve([])
+    }
 
     return new Promise((resolve) => {
       const lineText = document.getText(

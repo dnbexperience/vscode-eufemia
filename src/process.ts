@@ -3,14 +3,36 @@ import { RULES } from './rules'
 import { Position, Range, Selection, TextEditor } from 'vscode'
 import { isIngore } from './config'
 
-export class CssRemProcess {
+export class CSSProcessor {
   convert(text: string): ConvertResult[] | null {
     const res = this.getRule('single', text)
+
     if (res.length === 0) {
       return null
     }
 
-    return res.map((i) => i.rule.fn(i.text))
+    const result = res
+      .map((i) => {
+        if (
+          typeof i.rule.fnCondition === 'function' &&
+          !i.rule.fnCondition(text)
+        ) {
+          return null
+        }
+
+        if (typeof i.rule.fn === 'function') {
+          return i.rule.fn(i.text)
+        }
+
+        return null
+      })
+      .filter(Boolean) as ConvertResult[]
+
+    if (result.length) {
+      return result
+    }
+
+    return null
   }
 
   convertAll(code: string, ingores: string[], type: Type): string {
@@ -20,14 +42,25 @@ export class CssRemProcess {
 
     const rule = RULES.find((w) => w.type === type) as Rule
 
+    if (!rule.all) {
+      return code
+    }
+
     return code.replace(rule.all, (word: string) => {
       if (ingores.includes(word)) {
         return word
       }
+
+      if (!rule.fn) {
+        return word
+      }
+
       const res = rule.fn(word)
+
       if (res) {
         return res.value
       }
+
       return word
     })
   }
@@ -65,14 +98,14 @@ export class CssRemProcess {
     }
 
     const rule = RULES.find((w) => w.type === type)
-    return rule && rule.all.test(word) ? range : null
+    return rule?.all?.test(word) ? range : null
   }
 
   modifyDocument(
     textEditor: TextEditor,
     ingoresViaCommand: string[],
     type: Type
-  ): void {
+  ) {
     const doc = textEditor.document
     if (isIngore(doc.uri)) {
       return

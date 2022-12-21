@@ -8,7 +8,7 @@ import { resetRules } from './rules'
 export let cog!: Config
 export const eufemiaConfigFileName = '.eufemia'
 
-function loadConfigViaFile(): void {
+function loadConfigViaFile() {
   if (!workspace.workspaceFolders || workspace.workspaceFolders?.length <= 0) {
     return
   }
@@ -33,7 +33,7 @@ function loadConfigViaFile(): void {
   }
 }
 
-function fixIngores(): void {
+function fixIngores() {
   if (!Array.isArray(cog.ingores)) {
     cog.ingores = []
   }
@@ -46,7 +46,7 @@ function fixIngores(): void {
   cog.ingores = cog.ingores.map((p) => join(rootPath, p))
 }
 
-function fixLanguages(): void {
+function fixLanguages() {
   if (!Array.isArray(cog.languages)) {
     cog.languages = []
   }
@@ -56,7 +56,7 @@ function fixLanguages(): void {
   cog.languages = ['css', 'scss', 'sass', 'javascriptreact', 'typescriptreact']
 }
 
-export function loadConfig(): void {
+export function loadConfig() {
   cog = { ...(workspace.getConfiguration('eufemia') as any) }
   Object.keys(cog).forEach((key) => {
     const cur = cog as any

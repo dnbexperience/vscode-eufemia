@@ -20,51 +20,40 @@ export interface Config {
    */
   currentLine: 'disabled' | 'show'
   /**
-   * 忽略清单
+   * What to ignore
    */
   ingores: string[]
-  /**
-   * 支持语言清单
-   */
-  languages: string[]
   /**
    * Whether to enable rem hover
    */
   remHover: boolean
   /**
-   * Whether to enable VW switch px support
+   * List of CSS properties that are know for spacing
    */
-  vw: boolean
+  spacingProperties: string[]
   /**
-   * Whether to enable vw hover
+   * Supported code syntax languages
    */
-  vwHover: boolean
-  /**
-   * Specifies the width of the design (equar to the browser viewport width), default: `750`
-   */
-  vwDesign: number
+  languages: string[]
 }
 
 export interface Rule {
   type: Type
-  all: RegExp
+  all?: RegExp
   single?: RegExp
-  fn: (text: string) => ConvertResult
+  fn?: (text: string) => ConvertResult
+  fnCondition?: (text: string) => boolean
   hover?: RegExp | null
   hoverFn?: (text: string) => HoverResult
   documentation?: string
 }
 
 export type Type =
+  | 'pxToSpacing'
+  | 'remToSpacing'
+  | 'spacingToInfo'
   | 'pxToRem'
   | 'remToPx'
-  | 'pxSwitchRem'
-  | 'pxToVw'
-  | 'vwToPx'
-  | 'vwSwitchPx'
-  | 'pxToRpx'
-  | 'rpxToPx'
-  | 'rpxSwitchPx'
 
 export type RuleOPType = 'single' | 'all'
 
@@ -75,10 +64,6 @@ export interface ConvertResult {
   pxValue?: number | string
   rem?: string
   remValue?: number | string
-  vw?: string
-  vwValue?: number | string
-  rpx?: string
-  rpxValue?: number | string
   label: string
   value: string
   documentation?: string

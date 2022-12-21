@@ -14,7 +14,7 @@ export default class implements HoverProvider {
     const point = pos.character
     let text = ''
 
-    line.replace(/[.0-9]+(px|rem|rpx|vw)/g, (a, _, idx) => {
+    line.replace(/[.0-9]+(px|rem)/g, (a, _, idx) => {
       const start = idx + 1
       const end = idx + a.length + 1
       if (!text && point >= start && point <= end) {
@@ -38,7 +38,7 @@ export default class implements HoverProvider {
       return null
     }
 
-    let results = RULES.filter((w) => w.hover && w.hover.test(text))
+    let results = RULES.filter((w) => w?.hover?.test(text))
       .map((rule) => {
         if (typeof rule.hoverFn === 'function') {
           return rule.hoverFn(text)

@@ -2,18 +2,24 @@
   "name": "dnb-eufemia",
   "displayName": "eufemia",
   "description": "DNB Eufemia Design System Extension",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "dnbexperience",
-  "license": "SEE LICENSE IN LICENSE FILE",
+  "license": "SEE LICENSE IN LICENSE",
   "licenseUrl": "LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dnbexperience/vscode-eufemia.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dnbexperience/vscode-eufemia/issues"
+  },
+  "homepage": "https://github.com/dnbexperience/vscode-eufemia",
+  "icon": "assets/Eufemia-Logo-128.png",
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": [
-    "Other"
-  ],
+  "categories": [],
   "activationEvents": [
-    "onCommand:dnb-eufemia.helloWorld",
     "onLanguage:css",
     "onLanguage:scss",
     "onLanguage:sass",
@@ -24,13 +30,21 @@
   "contributes": {
     "commands": [
       {
-        "command": "dnb-eufemia.helloWorld",
-        "title": "Hello World 2"
+        "command": "extension.eufemia.px-to-spacing",
+        "title": "Eufemia: px to spacing types"
+      },
+      {
+        "command": "extension.eufemia.rem-to-spacing",
+        "title": "Eufemia: rem to spacing types"
+      },
+      {
+        "command": "extension.eufemia.px-to-rem",
+        "title": "Eufemia: px to rem"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "eufemia configuration",
+      "title": "Eufemia Configuration",
       "properties": {
         "eufemia.rootFontSize": {
           "type": "number",
@@ -91,6 +105,23 @@
           },
           "description": "%eufemia.languages%"
         },
+        "eufemia.spacingProperties": {
+          "type": "array",
+          "default": [
+            "margin",
+            "padding",
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "inset",
+            "translate"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "%eufemia.spacingProperties%"
+        },
         "eufemia.currentLine": {
           "type": "string",
           "enum": [
@@ -108,21 +139,6 @@
           "type": "boolean",
           "default": true,
           "description": "%eufemia.remHover%"
-        },
-        "eufemia.vw": {
-          "type": "boolean",
-          "default": false,
-          "description": "%eufemia.vw%"
-        },
-        "eufemia.vwHover": {
-          "type": "boolean",
-          "default": true,
-          "description": "%eufemia.vwHover%"
-        },
-        "eufemia.vwDesign": {
-          "type": "number",
-          "default": 750,
-          "description": "%eufemia.vwDesign%"
         }
       }
     },
@@ -173,10 +189,13 @@
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "vscode-nls": "^5.2.0",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0"
-  }
+  },
+  "packageManager": "yarn@1.22.1"
 }

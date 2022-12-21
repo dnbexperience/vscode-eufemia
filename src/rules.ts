@@ -1,21 +1,13 @@
 import * as nls from 'vscode-nls'
 import { cog } from './config'
-import { ConvertResult, Rule, Type } from './interface'
+import { Rule } from './interface'
+import { calc, spacePatterns } from '@dnb/eufemia/components/space/SpacingUtils'
 
 const localize = nls.config({ messageFormat: nls.MessageFormat.both })()
 
 export const RULES: Rule[] = []
 
-function cleanZero(val: number): string {
-  if (cog.autoRemovePrefixZero) {
-    if (val.toString().startsWith('0.')) {
-      return val.toString().substring(1)
-    }
-  }
-  return val + ''
-}
-
-export function resetRules(): void {
+export function resetRules() {
   RULES.length = 0
   RULES.push(
     {
@@ -26,7 +18,8 @@ export function resetRules(): void {
         const px = parseFloat(text)
         const resultValue = +(px / cog.rootFontSize).toFixed(cog.fixedDigits)
         const value = cleanZero(resultValue) + 'rem'
-        const label = `${px}px -> 🥰 ${value}`
+        const label = `${px}px 👉 ${value}`
+
         return {
           type: 'pxToRem',
           text,
@@ -37,25 +30,26 @@ export function resetRules(): void {
           value,
           label,
           documentation: localize(
-            `pxToRem.documentation`,
-            'Convert `{0}px` to `{1}` (the current benchmark font-size is `{2}px`, please refer to [Configuration Document](https://github.com/cipchk/vscode-cssrem#configuration) modify',
+            'pxToRem.documentation',
+            'Convert `{0}px` to `{1}`',
             px,
             value,
             cog.rootFontSize
           ),
         }
       },
-      hover: cog.remHover ? /([-]?[\d.]+)px/ : null,
+      hover: cog.remHover ? /(?<!var.*)([-]?[\d.]+)px/ : null,
       hoverFn: (pxText) => {
         const px = parseFloat(pxText)
         const val = +(px / cog.rootFontSize).toFixed(cog.fixedDigits)
+
         return {
           type: 'remToPx',
           from: `${px}px`,
           to: `${val}rem`,
           documentation: localize(
-            `pxToRem.documentation.hover`,
-            'Converted from `{0}rem` according to the benchmark font-size is `{1}px`',
+            'pxToRem.documentation.hover',
+            'Converted from `{0}rem`',
             val,
             cog.rootFontSize
           ),
@@ -70,7 +64,8 @@ export function resetRules(): void {
         const px = parseFloat(text)
         const resultValue = +(px * cog.rootFontSize).toFixed(cog.fixedDigits)
         const value = cleanZero(resultValue) + 'px'
-        const label = `${px}rem -> ${value}`
+        const label = `${px}rem 👉 ${value}`
+
         return {
           type: 'remToPx',
           text,
@@ -81,25 +76,26 @@ export function resetRules(): void {
           value,
           label,
           documentation: localize(
-            `remToPx.documentation`,
-            `Convert {0}rem to {1} (the current benchmark font-size is {2}px, please refer to [Configuration Document](https://github.com/cipchk/vscode-cssrem#configuration) modify`,
+            'remToPx.documentation',
+            'Convert {0}rem to {1}',
             px,
             value,
             cog.rootFontSize
           ),
         }
       },
-      hover: /([-]?[\d.]+)rem/,
+      hover: /(?<!var.*)([-]?[\d.]+)rem/,
       hoverFn: (remText) => {
         const rem = parseFloat(remText)
         const val = +(rem * cog.rootFontSize).toFixed(cog.fixedDigits)
+
         return {
           type: 'remToPx',
           from: `${rem}rem`,
           to: `${val}px`,
           documentation: localize(
-            `remToPx.documentation.hover`,
-            'Converted from `{0}px` according to the benchmark font-size is `{1}px`, please refer to [Configuration Document](https://github.com/cipchk/vscode-cssrem#configuration) modify',
+            'remToPx.documentation.hover',
+            'Converted from `{0}px`',
             val,
             cog.rootFontSize
           ),
@@ -107,124 +103,121 @@ export function resetRules(): void {
       },
     },
     {
-      type: 'pxSwitchRem',
-      all: /([-]?[\d.]+)(rem|px)/g,
+      type: 'pxToSpacing',
+      all: /([-]?[\d.]+)px/g,
+      single: /([-]?[\d.]+)p(x)?$/,
+      fnCondition: (text) => isSpacing(text),
       fn: (text) => {
-        const type: Type = text.endsWith('px') ? 'pxToRem' : 'remToPx'
-        const rule = RULES.find((r) => r.type === type)
-        return rule?.fn(text) as ConvertResult
+        const px = parseFloat(text)
+        const resultValue = +(px / cog.rootFontSize).toFixed(cog.fixedDigits)
+        let value = calc(px + 'px')
+        if (value.split('var').length - 1 === 1) {
+          value = value.replace(/calc\(([^)]*)\)/, '$1')
+        }
+        const label = `${px}px 👉 ${value}`
+
+        return {
+          type: 'pxToSpacing',
+          text,
+          px: `${px}px`,
+          pxValue: px,
+          remValue: resultValue,
+          rem: value,
+          value,
+          label,
+          documentation: localize(
+            'pxToSpacing.documentation',
+            'Convert `{0}` to `{1}`',
+            px,
+            value,
+            cog.rootFontSize
+          ),
+        }
+      },
+    },
+    {
+      type: 'remToSpacing',
+      all: /([-]?[\d.]+)rem/g,
+      single: /([-]?[\d.]+)r(e|em)?$/,
+      fnCondition: (text) => isSpacing(text),
+      fn: (text) => {
+        const px = parseFloat(text)
+        const resultValue = +(px * cog.rootFontSize).toFixed(cog.fixedDigits)
+        const value = calc(px + 'px')
+        const label = `${px}rem 👉 ${value}`
+
+        return {
+          type: 'remToSpacing',
+          text,
+          px: `${px}px`,
+          pxValue: px,
+          remValue: resultValue,
+          rem: value,
+          value,
+          label,
+          documentation: localize(
+            'remToSpacing.documentation',
+            'Convert {0}rem to {1}',
+            px,
+            value,
+            cog.rootFontSize
+          ),
+        }
+      },
+    },
+    {
+      type: 'spacingToInfo',
+      hover: /var\(--spacing-([^)]*)\)/,
+      hoverFn: (calcText) => {
+        const spaceTypes = calcText.matchAll(
+          /([+-]|)\s{0,}var\(--spacing-([^)]*)\)/g
+        )
+        let remVal = 0
+        const patterns = spacePatterns as Record<string, number>
+        Array.from(spaceTypes).forEach((spacing) => {
+          const space = spacing?.[2]
+          if (patterns[space]) {
+            switch (spacing?.[1]) {
+              default:
+              case '+':
+                remVal += patterns[space]
+                break
+
+              case '-':
+                remVal -= patterns[space]
+                break
+            }
+          }
+        })
+        const rem = remVal
+        const px = rem * cog.rootFontSize
+
+        return {
+          type: 'spacingToInfo',
+          from: calcText,
+          to: `${rem}rem (${px}px)`,
+          documentation: localize(
+            'spacingToInfo.documentation.hover',
+            'Converted from `{0}`',
+            rem,
+            cog.rootFontSize
+          ),
+        }
       },
     }
   )
+}
 
-  if (cog.vw) {
-    RULES.push(
-      {
-        type: 'pxToVw',
-        all: /([-]?[\d.]+)px/g,
-        single: /([-]?[\d.]+)p(x)?$/,
-        fn: (text) => {
-          const px = parseFloat(text)
-          const resultValue = +(px / (cog.vwDesign / 100.0)).toFixed(
-            cog.fixedDigits
-          )
-          const value = cleanZero(resultValue) + 'vw'
-          const label = `${px}px -> ${value}`
-          return {
-            type: 'pxToVw',
-            text,
-            px: `${px}px`,
-            pxValue: px,
-            vwValue: resultValue,
-            vw: value,
-            value,
-            label,
-            documentation: localize(
-              `pxToVw.documentation`,
-              'Convert `{0}px` to `{1}` (current device width `{2}px`, base font size is `{3}px`)',
-              px,
-              value,
-              cog.vwDesign,
-              cog.rootFontSize
-            ),
-          }
-        },
-        hover: cog.vwHover ? /([-]?[\d.]+)px/ : null,
-        hoverFn: (pxText) => {
-          const px = parseFloat(pxText)
-          const val = +(px / cog.rootFontSize).toFixed(cog.fixedDigits)
-          return {
-            type: 'pxToVw',
-            from: `${px}px`,
-            to: `${val}vw`,
-            documentation: localize(
-              `pxToVw.documentation.hover`,
-              'Convert `{0}px` to `{1}vw` (current device width `{2}px`, base font size is `{3}px`)',
-              val,
-              cog.rootFontSize,
-              cog.vwDesign,
-              cog.rootFontSize
-            ),
-          }
-        },
-      },
-      {
-        type: 'vwToPx',
-        all: /([-]?[\d.]+)vw/g,
-        single: /([-]?[\d.]+)vw?$/,
-        fn: (text) => {
-          const vw = parseFloat(text)
-          const resultValue = +(vw * (cog.vwDesign / 100.0)).toFixed(
-            cog.fixedDigits
-          )
-          const value = cleanZero(resultValue) + 'px'
-          const label = `${vw}vw -> ${value}`
-          return {
-            type: 'vwToPx',
-            text,
-            px: `${vw}px`,
-            pxValue: vw,
-            vwValue: resultValue,
-            vw: value,
-            value,
-            label,
-            documentation: localize(
-              `vwToPx.documentation`,
-              'Convert `{0}vw` to `{1}` (current device width `{2}px`, base font size is `{3}px`)',
-              vw,
-              value,
-              cog.vwDesign,
-              cog.rootFontSize
-            ),
-          }
-        },
-        hover: /([-]?[\d.]+)vw/,
-        hoverFn: (rpxText) => {
-          const vw = parseFloat(rpxText)
-          const val = +(vw * (cog.vwDesign / 100.0)).toFixed(cog.fixedDigits)
-          return {
-            type: 'vwToPx',
-            from: `${vw}vw`,
-            to: `${val}px`,
-            documentation: localize(
-              `vwToPx.documentation.hover`,
-              'Converted from `{0}px` (current device width `{1}px`, base font size is `{2}px`)',
-              val,
-              cog.vwDesign,
-              cog.rootFontSize
-            ),
-          }
-        },
-      },
-      {
-        type: 'vwSwitchPx',
-        all: /([-]?[\d.]+)(vw|px)/g,
-        fn: (text) => {
-          const type: Type = text.endsWith('vw') ? 'pxToVw' : 'vwToPx'
-          const rule = RULES.find((r) => r.type === type)
-          return rule?.fn(text) as ConvertResult
-        },
-      }
-    )
+export function isSpacing(text: string) {
+  return new RegExp(cog.spacingProperties.join('|')).test(text)
+}
+
+function cleanZero(val: number) {
+  if (cog.autoRemovePrefixZero) {
+    if (val.toString().startsWith('0.')) {
+      return val.toString().substring(1)
+    }
   }
+
+  return val + ''
 }

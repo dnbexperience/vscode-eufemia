@@ -1,5 +1,4 @@
 {
-  "rootFontSize": 24,
-  "fixedDigits": 3,
-  "vw": true
+  "rootFontSize": 16,
+  "fixedDigits": 3
 }
