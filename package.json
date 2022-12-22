@@ -1,8 +1,8 @@
 {
   "name": "dnb-eufemia",
-  "displayName": "eufemia",
+  "displayName": "DNB Eufemia Tools",
   "description": "DNB Eufemia Design System Extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "dnbexperience",
   "license": "SEE LICENSE IN LICENSE",
   "licenseUrl": "LICENSE",
