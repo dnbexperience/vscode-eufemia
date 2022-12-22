@@ -115,13 +115,13 @@ export class LineAnnotation implements Disposable {
   }
 
   private genMessage(doc: TextDocument, lineNumber: number): string | null {
-    const text = doc.lineAt(lineNumber).text.trim()
+    const lineText = doc.lineAt(lineNumber).text.trim()
 
-    if (text.length <= 0) {
+    if (lineText.length <= 0) {
       return null
     }
 
-    const values = text.match(/([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g)
+    const values = lineText.match(/([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g)
 
     if (!values) {
       return null

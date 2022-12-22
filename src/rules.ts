@@ -127,7 +127,7 @@ export function resetRules() {
           label,
           documentation: localize(
             'pxToSpacing.documentation',
-            'Convert `{0}` to `{1}`',
+            'Convert `{0}px` to `{1}`',
             px,
             value,
             cog.rootFontSize
