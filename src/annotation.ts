@@ -121,10 +121,6 @@ export class LineAnnotation implements Disposable {
       return null
     }
 
-    if (!isSpacing(text)) {
-      return null
-    }
-
     const values = text.match(/([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g)
 
     if (!values) {

@@ -11,7 +11,9 @@ When inside files like: CSS, SCSS, Emotion or Styled Components
 Spacing types are Eufemia spatial system units like; large, medium, small. They can and should be used when defining spacing between components:
 
 ```css
-margin-top: var(--spacing-small); /* 1rem (16px) */
+div {
+  margin-top: var(--spacing-small); /* 1rem (16px) */
+}
 ```
 
 - Convert pixel values to "spacing types". Effects CSS properties like margin, padding etc.
