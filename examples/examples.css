@@ -1,0 +1,8 @@
+body {
+  font-size: 16px;
+  margin-top: 1rem;
+  margin-top: 16px;
+  margin-top: calc(var(--spacing-small) + 8rem);
+  margin-top: calc(var(--spacing-medium) - var(--spacing-small));
+  padding-top: var(--spacing-x-small);
+}
