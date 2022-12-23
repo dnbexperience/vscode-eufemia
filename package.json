@@ -1,8 +1,8 @@
 {
-  "name": "dnb-eufemia",
+  "name": "vscode-eufemia",
   "displayName": "DNB Eufemia Tools",
   "description": "DNB Eufemia Design System Extension",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "publisher": "dnbexperience",
   "license": "SEE LICENSE IN LICENSE",
   "licenseUrl": "LICENSE",
@@ -16,7 +16,7 @@
   "homepage": "https://github.com/dnbexperience/vscode-eufemia",
   "icon": "assets/Eufemia-Logo-128.png",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.70.x"
   },
   "categories": [],
   "activationEvents": [
@@ -181,7 +181,7 @@
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
-    "@types/vscode": "^1.74.0",
+    "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "@vscode/test-electron": "^2.2.0",
