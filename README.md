@@ -4,7 +4,9 @@ This extension will include tools and helpers to enhance DX and make devs more p
 
 ## Spacing helpers and conversion
 
-When inside files like: CSS, SCSS, Emotion or Styled Components
+When inside files like: CSS, SCSS, Emotion or Styled Components.
+
+![](./assets/Eufemia-VSCode-Extension-with-CSS.gif)
 
 ### Spacing types
 
