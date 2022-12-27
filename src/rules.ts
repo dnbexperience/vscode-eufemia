@@ -189,7 +189,7 @@ export function initRules() {
       },
     },
     {
-      type: 'spacingToInfo',
+      type: 'spacingInfo',
       hover: {
         hoverTest: /var\(--spacing-([^)]*)\)/,
         hoverFn: (calcText) => {
@@ -222,11 +222,11 @@ export function initRules() {
           )
 
           return {
-            type: 'spacingToInfo',
+            type: 'spacingInfo',
             from: calcText,
             to: `${rem}rem (${px}px)`,
             documentation: localize(
-              'spacingToInfo.documentation.hover',
+              'spacingInfo.documentation.hover',
               'Converted from `{0}`',
               rem,
               conf.rootFontSize

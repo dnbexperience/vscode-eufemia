@@ -73,7 +73,7 @@ export type Rule = {
 export type Type =
   | 'pxToSpacing'
   | 'remToSpacing'
-  | 'spacingToInfo'
+  | 'spacingInfo'
   | 'pxToRem'
   | 'remToPx'
 
