@@ -1,3 +1,4 @@
+import * as nls from 'vscode-nls'
 import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
 import { join } from 'path'
@@ -7,6 +8,10 @@ import { initRules } from '../rules'
 
 export let conf!: Config
 export const eufemiaConfigFileName = '.eufemia'
+
+export const localize = nls.config({
+  messageFormat: nls.MessageFormat.both,
+})()
 
 function loadConfigViaFile() {
   if (
