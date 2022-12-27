@@ -1,9 +1,9 @@
 import { commands, ExtensionContext, languages, workspace } from 'vscode'
-import CssRemProvider from './completion'
-import { cog, eufemiaConfigFileName, loadConfig } from './config'
-import CssRemHoverProvider from './hover'
-import { LineAnnotation } from './annotation'
-import { CSSProcessor } from './process'
+import CssRemProvider from './extension/completion'
+import { conf, eufemiaConfigFileName, loadConfig } from './extension/init'
+import CssRemHoverProvider from './extension/hover'
+import { LineAnnotation } from './extension/annotation'
+import { CSSProcessor } from './extension/convert'
 
 let process: CSSProcessor
 
@@ -13,7 +13,7 @@ export function activate(context: ExtensionContext) {
 
   process = new CSSProcessor()
 
-  const syntaxLanguages = [...cog.languages]
+  const syntaxLanguages = [...conf.languages]
   for (const lang of syntaxLanguages) {
     const providerDisposable = languages.registerCompletionItemProvider(
       lang,
@@ -21,14 +21,14 @@ export function activate(context: ExtensionContext) {
     )
     context.subscriptions.push(providerDisposable)
   }
-  if (cog.hover !== 'disabled') {
+  if (conf.hover !== 'disabled') {
     const hoverProvider = new CssRemHoverProvider()
     context.subscriptions.push(
       languages.registerHoverProvider(syntaxLanguages, hoverProvider)
     )
   }
 
-  const ingoresViaCommand = ((cog.ingoresViaCommand || []) as string[])
+  const ingoresViaCommand = ((conf.ingoresViaCommand || []) as string[])
     .filter((w) => !!w)
     .map((v) => (v.endsWith('px') ? v : `${v}px`))
 
@@ -36,7 +36,11 @@ export function activate(context: ExtensionContext) {
     commands.registerTextEditorCommand(
       'extension.eufemia.px-to-spacing',
       (textEditor) => {
-        process.modifyDocument(textEditor, ingoresViaCommand, 'pxToSpacing')
+        process.modifyDocument(
+          textEditor,
+          ingoresViaCommand,
+          'pxToSpacing'
+        )
       }
     ),
     commands.registerTextEditorCommand(
@@ -48,12 +52,16 @@ export function activate(context: ExtensionContext) {
     commands.registerTextEditorCommand(
       'extension.eufemia.rem-to-spacing',
       (textEditor) => {
-        process.modifyDocument(textEditor, ingoresViaCommand, 'remToSpacing')
+        process.modifyDocument(
+          textEditor,
+          ingoresViaCommand,
+          'remToSpacing'
+        )
       }
     )
   )
 
-  if (cog.currentLine !== 'disabled') {
+  if (conf.currentLine !== 'disabled') {
     context.subscriptions.push(new LineAnnotation())
   }
 

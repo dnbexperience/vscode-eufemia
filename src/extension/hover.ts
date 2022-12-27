@@ -6,8 +6,8 @@ import {
   ProviderResult,
   TextDocument,
 } from 'vscode'
-import { cog, isIngore } from './config'
-import { RULES } from './rules'
+import { conf, isIngore } from './init'
+import { RULES } from '../rules'
 
 export default class implements HoverProvider {
   private getText(line: string, pos: Position): string {
@@ -38,15 +38,15 @@ export default class implements HoverProvider {
       return null
     }
 
-    let results = RULES.filter((w) => w?.hover?.test(text))
+    let results = RULES.filter((w) => w?.hover?.hoverTest?.test(text))
       .map((rule) => {
-        if (typeof rule.hoverFn === 'function') {
-          return rule.hoverFn(text)
+        if (typeof rule.hover?.hoverFn === 'function') {
+          return rule.hover.hoverFn(text)
         }
       })
       .filter((h) => h !== null && h?.documentation)
 
-    if (cog.hover === 'onlyMark') {
+    if (conf.hover === 'onlyMark') {
       results = results.filter((w) => !line.includes(`/* ${w?.type} */`))
     }
 
@@ -59,7 +59,9 @@ export default class implements HoverProvider {
     }
 
     return new Hover(
-      new MarkdownString(results.map((h) => `- ${h?.documentation}`).join('\n'))
+      new MarkdownString(
+        results.map((h) => `- ${h?.documentation}`).join('\n')
+      )
     )
   }
 }

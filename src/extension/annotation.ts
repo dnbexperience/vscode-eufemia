@@ -10,9 +10,9 @@ import {
   ThemeColor,
   window,
 } from 'vscode'
-import { cog, isIngore } from './config'
-import { HoverResult } from './interface'
-import { RULES, isSpacing } from './rules'
+import { conf, isIngore } from './init'
+import { HoverResult } from './types'
+import { RULES } from '../rules'
 
 const annotationDecoration = window.createTextEditorDecorationType({
   after: {
@@ -22,7 +22,7 @@ const annotationDecoration = window.createTextEditorDecorationType({
   rangeBehavior: DecorationRangeBehavior.ClosedOpen,
 })
 
-interface LineSelection {
+type LineSelection = {
   anchor: number
   active: number
 }
@@ -47,7 +47,8 @@ export class LineAnnotation implements Disposable {
       return
     }
     this._enabled =
-      cog.languages.includes(e.document.languageId) && !isIngore(e.document.uri)
+      conf.languages.includes(e.document.languageId) &&
+      !isIngore(e.document.uri)
   }
 
   private onTextEditorSelectionChanged(e: TextEditorSelectionChangeEvent) {
@@ -114,14 +115,19 @@ export class LineAnnotation implements Disposable {
     editor.setDecorations(annotationDecoration, [decoration])
   }
 
-  private genMessage(doc: TextDocument, lineNumber: number): string | null {
+  private genMessage(
+    doc: TextDocument,
+    lineNumber: number
+  ): string | null {
     const lineText = doc.lineAt(lineNumber).text.trim()
 
     if (lineText.length <= 0) {
       return null
     }
 
-    const values = lineText.match(/([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g)
+    const values = lineText.match(
+      /([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g
+    )
 
     if (!values) {
       return null
@@ -129,9 +135,11 @@ export class LineAnnotation implements Disposable {
 
     const results = values
       .map((text) => {
-        const rule = RULES.filter((w) => w?.hover?.test(text)).map((h) => {
-          if (typeof h.hoverFn === 'function') {
-            return h.hoverFn(text)
+        const rule = RULES.filter((w) =>
+          w.hover?.hoverTest?.test(text)
+        ).map((h) => {
+          if (typeof h.hover?.hoverFn === 'function') {
+            return h.hover.hoverFn(text)
           }
         })
 

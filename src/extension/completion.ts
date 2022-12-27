@@ -7,8 +7,8 @@ import {
   Range,
   TextDocument,
 } from 'vscode'
-import { cog, isIngore } from './config'
-import { CSSProcessor } from './process'
+import { conf, isIngore } from './init'
+import { CSSProcessor } from './convert'
 
 export default class implements CompletionItemProvider {
   constructor(private lan: string, private process: CSSProcessor) {}
@@ -32,12 +32,16 @@ export default class implements CompletionItemProvider {
 
       return resolve(
         res.map((i, idx) => {
-          const item = new CompletionItem(i.label, CompletionItemKind.Snippet)
+          const item = new CompletionItem(
+            i.label,
+            CompletionItemKind.Snippet
+          )
           if (i.documentation) {
             item.documentation = new MarkdownString(i.documentation)
           }
           item.preselect = idx === 0
-          item.insertText = i.value + (cog.addMark ? ` /* ${i.label} */` : ``)
+          item.insertText =
+            i.value + (conf.addMark ? ` /* ${i.label} */` : ``)
           return item
         })
       )
