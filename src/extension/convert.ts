@@ -1,27 +1,27 @@
-import { ConvertResult, Rule, RuleOPType, Type } from './interface'
-import { RULES } from './rules'
+import { ConvertResult, Rule, RuleOPType, Type } from './types'
+import { RULES } from '../rules'
 import { Position, Range, Selection, TextEditor } from 'vscode'
-import { isIngore } from './config'
+import { isIngore } from './init'
 
 export class CSSProcessor {
   convert(text: string): ConvertResult[] | null {
-    const res = this.getRule('single', text)
+    const rules = this.getConvertRule('singleTest', text)
 
-    if (res.length === 0) {
+    if (rules.length === 0) {
       return null
     }
 
-    const result = res
+    const result = rules
       .map((i) => {
         if (
-          typeof i.rule.fnCondition === 'function' &&
-          !i.rule.fnCondition(text)
+          typeof i.rule.convert?.fnCondition === 'function' &&
+          !i.rule.convert.fnCondition(text)
         ) {
           return null
         }
 
-        if (typeof i.rule.fn === 'function') {
-          return i.rule.fn(i.text)
+        if (typeof i.rule.convert?.fn === 'function') {
+          return i.rule.convert.fn(i.text)
         }
 
         return null
@@ -42,20 +42,20 @@ export class CSSProcessor {
 
     const rule = RULES.find((w) => w.type === type) as Rule
 
-    if (!rule.all) {
+    if (!rule.convert?.allTest) {
       return code
     }
 
-    return code.replace(rule.all, (word: string) => {
+    return code.replace(rule.convert?.allTest, (word: string) => {
       if (ingores.includes(word)) {
         return word
       }
 
-      if (!rule.fn) {
+      if (!rule.convert?.fn) {
         return word
       }
 
-      const res = rule.fn(word)
+      const res = rule.convert.fn(word)
 
       if (res) {
         return res.value
@@ -65,13 +65,13 @@ export class CSSProcessor {
     })
   }
 
-  private getRule(
+  private getConvertRule(
     type: RuleOPType,
     text: string
   ): { rule: Rule; text: string }[] {
     const result: { rule: Rule; text: string }[] = []
     for (const rule of RULES) {
-      const match = text.match(rule[type] || '')
+      const match = text.match(rule.convert?.[type] || '')
       if (match && match[1]) {
         result.push({ rule, text: match[1] })
       }
@@ -98,7 +98,7 @@ export class CSSProcessor {
     }
 
     const rule = RULES.find((w) => w.type === type)
-    return rule?.all?.test(word) ? range : null
+    return rule?.convert?.allTest?.test(word) ? range : null
   }
 
   modifyDocument(
@@ -107,12 +107,12 @@ export class CSSProcessor {
     type: Type
   ) {
     const doc = textEditor.document
+
     if (isIngore(doc.uri)) {
       return
     }
 
     let selection: Selection | Range = textEditor.selection
-    // When the cursor is in the valid range in switch mode
 
     if (selection.isEmpty && type.toLowerCase().includes('switch')) {
       const wordRange = this.getWordRange(textEditor, type)
@@ -131,6 +131,7 @@ export class CSSProcessor {
     }
 
     const text = doc.getText(selection)
+
     textEditor.edit((builder) => {
       builder.replace(selection, this.convertAll(text, ingoresViaCommand, type))
     })

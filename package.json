@@ -2,6 +2,7 @@
   "name": "vscode-eufemia",
   "displayName": "DNB Eufemia Tools",
   "description": "DNB Eufemia Design System Extension",
+  "categories": [],
   "version": "1.0.5",
   "publisher": "dnbexperience",
   "license": "SEE LICENSE IN LICENSE",
@@ -18,7 +19,18 @@
   "engines": {
     "vscode": "^1.70.x"
   },
-  "categories": [],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/__tests__/runTest.js"
+  },
   "activationEvents": [
     "onLanguage:css",
     "onLanguage:scss",
@@ -26,7 +38,6 @@
     "onLanguage:javascriptreact",
     "onLanguage:typescriptreact"
   ],
-  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -143,35 +154,24 @@
     },
     "colors": [
       {
+        "id": "extension.eufemia.trailingLineForegroundColor",
+        "description": "Specifies the foreground color of the annotation for the current line",
+        "defaults": {
+          "dark": "#99999980",
+          "light": "#99999980",
+          "highContrast": "#99999999"
+        }
+      },
+      {
         "id": "extension.eufemia.trailingLineBackgroundColor",
-        "description": "Specifies the background color of the blame annotation for the current line",
+        "description": "Specifies the background color of the annotation for the current line",
         "defaults": {
           "dark": "#00000000",
           "light": "#00000000",
           "highContrast": "#00000000"
         }
-      },
-      {
-        "id": "extension.eufemia.trailingLineForegroundColor",
-        "description": "Specifies the foreground color of the blame annotation for the current line",
-        "defaults": {
-          "dark": "#99999970",
-          "light": "#99999970",
-          "highContrast": "#99999999"
-        }
       }
     ]
-  },
-  "scripts": {
-    "vscode:prepublish": "yarn run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
   },
   "dependencies": {
     "@dnb/eufemia": "^9.45.0",

@@ -2,10 +2,10 @@ import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
 import { join } from 'path'
 import { Uri, workspace } from 'vscode'
-import { Config } from './interface'
-import { resetRules } from './rules'
+import { Config } from './types'
+import { initRules } from '../rules'
 
-export let cog!: Config
+export let conf!: Config
 export const eufemiaConfigFileName = '.eufemia'
 
 function loadConfigViaFile() {
@@ -23,8 +23,8 @@ function loadConfigViaFile() {
   }
   try {
     const res = parse(readFileSync(eufemiaConfigPath).toString('utf-8'))
-    cog = {
-      ...cog,
+    conf = {
+      ...conf,
       ...res,
     }
     console.warn(`Use override config via ${eufemiaConfigPath} file`)
@@ -34,8 +34,8 @@ function loadConfigViaFile() {
 }
 
 function fixIngores() {
-  if (!Array.isArray(cog.ingores)) {
-    cog.ingores = []
+  if (!Array.isArray(conf.ingores)) {
+    conf.ingores = []
   }
 
   if (!workspace.workspaceFolders || workspace.workspaceFolders?.length <= 0) {
@@ -43,34 +43,51 @@ function fixIngores() {
   }
 
   const rootPath = workspace.workspaceFolders[0].uri.path
-  cog.ingores = cog.ingores.map((p) => join(rootPath, p))
+  conf.ingores = conf.ingores.map((p) => join(rootPath, p))
 }
 
 function fixLanguages() {
-  if (!Array.isArray(cog.languages)) {
-    cog.languages = []
+  if (!Array.isArray(conf.languages)) {
+    conf.languages = []
   }
-  if (cog.languages.length > 0) {
+  if (conf.languages.length > 0) {
     return
   }
-  cog.languages = ['css', 'scss', 'sass', 'javascriptreact', 'typescriptreact']
+  conf.languages = ['css', 'scss', 'sass', 'javascriptreact', 'typescriptreact']
 }
 
 export function loadConfig() {
-  cog = { ...(workspace.getConfiguration('eufemia') as any) }
-  Object.keys(cog).forEach((key) => {
-    const cur = cog as any
+  conf = { ...(workspace.getConfiguration('eufemia') as any) }
+
+  Object.keys(conf).forEach((key) => {
+    const cur = conf as any
     if (typeof cur[key] === 'function') {
       delete cur[key]
     }
   })
+
   loadConfigViaFile()
   fixIngores()
   fixLanguages()
-  resetRules()
-  console.log('Current config', cog)
+  initRules()
+
+  console.log('Current config', conf)
 }
 
 export function isIngore(uri: Uri) {
-  return cog.ingores.some((p) => uri.path.startsWith(p))
+  return conf.ingores.some((p) => uri.path.startsWith(p))
+}
+
+export function isSpacing(text: string) {
+  return new RegExp(conf.spacingProperties.join('|')).test(text)
+}
+
+export function cleanZero(val: number) {
+  if (conf.autoRemovePrefixZero) {
+    if (val.toString().startsWith('0.')) {
+      return val.toString().substring(1)
+    }
+  }
+
+  return val + ''
 }
