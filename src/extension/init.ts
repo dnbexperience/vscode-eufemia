@@ -36,7 +36,7 @@ function loadConfigViaFile() {
   }
 }
 
-function fixIngores() {
+function initIngores() {
   if (!Array.isArray(conf.ingores)) {
     conf.ingores = []
   }
@@ -52,7 +52,7 @@ function fixIngores() {
   conf.ingores = conf.ingores.map((p) => join(rootPath, p))
 }
 
-function fixLanguages() {
+function initLanguages() {
   if (!Array.isArray(conf.languages)) {
     conf.languages = []
   }
@@ -79,8 +79,8 @@ export function loadConfig() {
   })
 
   loadConfigViaFile()
-  fixIngores()
-  fixLanguages()
+  initIngores()
+  initLanguages()
   initRules()
 
   console.log('Current config', conf)

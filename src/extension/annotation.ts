@@ -33,6 +33,10 @@ export class LineAnnotation implements Disposable {
   private _enabled = false
 
   constructor() {
+    if (!this._disposable && window.activeTextEditor) {
+      this.onActiveTextEditor(window.activeTextEditor)
+    }
+
     this._disposable = Disposable.from(
       window.onDidChangeActiveTextEditor(this.onActiveTextEditor, this),
       window.onDidChangeTextEditorSelection(
@@ -42,34 +46,36 @@ export class LineAnnotation implements Disposable {
     )
   }
 
-  private onActiveTextEditor(e: TextEditor | undefined) {
-    if (!e) {
+  private onActiveTextEditor(editor: TextEditor | undefined) {
+    if (!editor) {
       return
     }
     this._enabled =
-      conf.languages.includes(e.document.languageId) &&
-      !isIngore(e.document.uri)
+      conf.languages.includes(editor.document.languageId) &&
+      !isIngore(editor.document.uri)
   }
 
-  private onTextEditorSelectionChanged(e: TextEditorSelectionChangeEvent) {
+  private onTextEditorSelectionChanged(
+    editor: TextEditorSelectionChangeEvent
+  ) {
     if (!this._enabled) {
       return
     }
 
-    if (!this.isTextEditor(e.textEditor)) {
+    if (!this.isTextEditor(editor.textEditor)) {
       return
     }
 
-    const selections = this.toLineSelections(e.selections)
+    const selections = this.toLineSelections(editor.selections)
     if (
       selections.length === 0 ||
       !selections.every((s) => s.active === s.anchor)
     ) {
-      this.clear(e.textEditor)
+      this.clear(editor.textEditor)
       return
     }
 
-    this.refresh(e.textEditor, selections[0])
+    this.refresh(editor.textEditor, selections[0])
   }
 
   private async refresh(
