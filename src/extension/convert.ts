@@ -133,7 +133,10 @@ export class CSSProcessor {
     const text = doc.getText(selection)
 
     textEditor.edit((builder) => {
-      builder.replace(selection, this.convertAll(text, ingoresViaCommand, type))
+      builder.replace(
+        selection,
+        this.convertAll(text, ingoresViaCommand, type)
+      )
     })
   }
 }

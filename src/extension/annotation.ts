@@ -115,14 +115,19 @@ export class LineAnnotation implements Disposable {
     editor.setDecorations(annotationDecoration, [decoration])
   }
 
-  private genMessage(doc: TextDocument, lineNumber: number): string | null {
+  private genMessage(
+    doc: TextDocument,
+    lineNumber: number
+  ): string | null {
     const lineText = doc.lineAt(lineNumber).text.trim()
 
     if (lineText.length <= 0) {
       return null
     }
 
-    const values = lineText.match(/([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g)
+    const values = lineText.match(
+      /([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g
+    )
 
     if (!values) {
       return null
@@ -130,13 +135,13 @@ export class LineAnnotation implements Disposable {
 
     const results = values
       .map((text) => {
-        const rule = RULES.filter((w) => w.hover?.hoverTest?.test(text)).map(
-          (h) => {
-            if (typeof h.hover?.hoverFn === 'function') {
-              return h.hover.hoverFn(text)
-            }
+        const rule = RULES.filter((w) =>
+          w.hover?.hoverTest?.test(text)
+        ).map((h) => {
+          if (typeof h.hover?.hoverFn === 'function') {
+            return h.hover.hoverFn(text)
           }
-        )
+        })
 
         return {
           text,

@@ -1,7 +1,10 @@
 import * as nls from 'vscode-nls'
 import { cleanZero, conf, isSpacing } from './extension/init'
 import { Rule } from './extension/types'
-import { calc, spacePatterns } from '@dnb/eufemia/components/space/SpacingUtils'
+import {
+  calc,
+  spacePatterns,
+} from '@dnb/eufemia/components/space/SpacingUtils'
 
 const localize = nls.config({ messageFormat: nls.MessageFormat.both })()
 
@@ -214,7 +217,9 @@ export function initRules() {
           })
 
           const rem = +remVal.toFixed(conf.fixedDigits)
-          const px = +(remVal * conf.rootFontSize).toFixed(conf.fixedDigits)
+          const px = +(remVal * conf.rootFontSize).toFixed(
+            conf.fixedDigits
+          )
 
           return {
             type: 'spacingToInfo',

@@ -59,7 +59,9 @@ export default class implements HoverProvider {
     }
 
     return new Hover(
-      new MarkdownString(results.map((h) => `- ${h?.documentation}`).join('\n'))
+      new MarkdownString(
+        results.map((h) => `- ${h?.documentation}`).join('\n')
+      )
     )
   }
 }

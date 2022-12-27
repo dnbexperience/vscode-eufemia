@@ -36,7 +36,11 @@ export function activate(context: ExtensionContext) {
     commands.registerTextEditorCommand(
       'extension.eufemia.px-to-spacing',
       (textEditor) => {
-        process.modifyDocument(textEditor, ingoresViaCommand, 'pxToSpacing')
+        process.modifyDocument(
+          textEditor,
+          ingoresViaCommand,
+          'pxToSpacing'
+        )
       }
     ),
     commands.registerTextEditorCommand(
@@ -48,7 +52,11 @@ export function activate(context: ExtensionContext) {
     commands.registerTextEditorCommand(
       'extension.eufemia.rem-to-spacing',
       (textEditor) => {
-        process.modifyDocument(textEditor, ingoresViaCommand, 'remToSpacing')
+        process.modifyDocument(
+          textEditor,
+          ingoresViaCommand,
+          'remToSpacing'
+        )
       }
     )
   )

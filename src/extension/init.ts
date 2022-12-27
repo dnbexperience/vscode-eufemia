@@ -9,7 +9,10 @@ export let conf!: Config
 export const eufemiaConfigFileName = '.eufemia'
 
 function loadConfigViaFile() {
-  if (!workspace.workspaceFolders || workspace.workspaceFolders?.length <= 0) {
+  if (
+    !workspace.workspaceFolders ||
+    workspace.workspaceFolders?.length <= 0
+  ) {
     return
   }
 
@@ -38,7 +41,10 @@ function fixIngores() {
     conf.ingores = []
   }
 
-  if (!workspace.workspaceFolders || workspace.workspaceFolders?.length <= 0) {
+  if (
+    !workspace.workspaceFolders ||
+    workspace.workspaceFolders?.length <= 0
+  ) {
     return
   }
 
@@ -53,7 +59,13 @@ function fixLanguages() {
   if (conf.languages.length > 0) {
     return
   }
-  conf.languages = ['css', 'scss', 'sass', 'javascriptreact', 'typescriptreact']
+  conf.languages = [
+    'css',
+    'scss',
+    'sass',
+    'javascriptreact',
+    'typescriptreact',
+  ]
 }
 
 export function loadConfig() {
