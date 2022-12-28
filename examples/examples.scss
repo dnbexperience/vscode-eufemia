@@ -9,7 +9,7 @@ body {
   --spacing-xx-large: 3.5rem;
   --spacing-xx-large: 8px;
 
-  font-size: 16px;
+  font-size: var(--font-size-small);
   margin-top: 1rem;
   margin-top: 16px;
   margin-top: calc(var(--spacing-small) + 8rem);

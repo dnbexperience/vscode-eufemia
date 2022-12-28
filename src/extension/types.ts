@@ -60,12 +60,12 @@ export type Rule = {
   convert?: {
     allTest?: RegExp
     singleTest?: RegExp
-    fn?: (text: string) => ConvertResult
+    fn?: (text: string, line?: string) => ConvertResult
     fnCondition?: (text: string) => boolean
   }
   hover?: {
     hoverTest?: RegExp | null
-    hoverFn?: (text: string) => HoverResult
+    hoverFn?: (text: string) => HoverResult | null
   }
   // documentation?: string
 }
@@ -76,6 +76,7 @@ export type Type =
   | 'spacingInfo'
   | 'pxToRem'
   | 'remToPx'
+  | 'handleFontSize'
 
 export type RuleOPType = 'singleTest' | 'allTest'
 

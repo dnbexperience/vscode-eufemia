@@ -131,9 +131,7 @@ export class LineAnnotation implements Disposable {
       return null
     }
 
-    const values = lineText.match(
-      /([.0-9]+(px|rem))|var\(--spacing-(.*)\)/g
-    )
+    const values = lineText.match(/([.0-9]+(px|rem))|var\((.*)\)/g)
 
     if (!values) {
       return null
@@ -154,7 +152,7 @@ export class LineAnnotation implements Disposable {
           rule,
         }
       })
-      .filter((item) => item.rule.length > 0)
+      .filter((item) => item.rule.length > 0 && item.rule[0])
 
     if (results.length <= 0) {
       return null
