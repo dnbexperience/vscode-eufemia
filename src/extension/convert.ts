@@ -21,7 +21,7 @@ export class CSSProcessor {
         }
 
         if (typeof i.rule.convert?.fn === 'function') {
-          return i.rule.convert.fn(i.text)
+          return i.rule.convert.fn(i.text, text)
         }
 
         return null
@@ -98,6 +98,7 @@ export class CSSProcessor {
     }
 
     const rule = RULES.find((w) => w.type === type)
+
     return rule?.convert?.allTest?.test(word) ? range : null
   }
 
@@ -139,4 +140,40 @@ export class CSSProcessor {
       )
     })
   }
+}
+
+export function cleanProperties(
+  findKey: string,
+  properties: Record<string, string>
+): Record<string, string> {
+  return Object.entries(properties).reduce(
+    (acc: Record<string, string>, [key, value]) => {
+      if (key.includes(findKey)) {
+        acc[key.replace(findKey, '')] = value.replace('rem', '')
+      }
+      return acc
+    },
+    {}
+  )
+}
+
+export function findNearestTypes(
+  size: number,
+  list: Record<string, string>,
+  initialValue = 'basis'
+) {
+  const items = Object.entries(list).sort(
+    ([, a], [, b]) => parseFloat(a) - parseFloat(b)
+  )
+  const last = items.at(-1)
+
+  for (const item of items) {
+    const [type, value] = item
+    if (parseFloat(value) >= size || last?.[0] === type) {
+      initialValue = type
+      break
+    }
+  }
+
+  return initialValue
 }
