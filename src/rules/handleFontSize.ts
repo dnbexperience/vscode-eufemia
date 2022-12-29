@@ -3,7 +3,8 @@ import { cleanProperties, findNearestTypes } from '../extension/convert'
 import { conf, localize } from '../extension/init'
 import { Rule } from '../extension/types'
 
-const varId = '--font-size-'
+const typeId = `font\-size`
+const varId = `\-\-${typeId}\-`
 const sizes = cleanProperties(varId, properties)
 
 export const handleFontSize = (): Rule => {
@@ -12,7 +13,7 @@ export const handleFontSize = (): Rule => {
     convert: {
       allTest: /([-]?[\d.]+)(px|rem)/g,
       singleTest: /([-]?[\d.]+)(p(x)?|r(e|em)?)$/,
-      fnCondition: (text) => /font\-size/.test(text),
+      fnCondition: (text) => new RegExp(typeId).test(text),
       fn: (text, line) => {
         const isPx = line ? /p(x)?/.test(line) : false
         const fromValue = parseFloat(text)
@@ -40,11 +41,13 @@ export const handleFontSize = (): Rule => {
       },
     },
     hover: {
-      hoverTest: /var\(--font-size-([^)]*)\)/,
+      hoverTest: new RegExp(`var\\(${varId}([^)]*)\\)`),
       hoverFn: (calcText) => {
         let remVal = 0
 
-        const sizeTypes = calcText.matchAll(/var\(--font-size-([^)]*)\)/g)
+        const sizeTypes = calcText.matchAll(
+          new RegExp(`var\\(${varId}([^)]*)\\)`, 'g')
+        )
 
         remVal = parseFloat(sizes[String(Array.from(sizeTypes)[0][1])])
 
