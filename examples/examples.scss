@@ -9,10 +9,12 @@ body {
   --spacing-xx-large: 3.5rem;
   --spacing-xx-large: 8px;
 
-  font-size: var(--font-size-small);
   margin-top: 1rem;
-  margin-top: 16px;
-  margin-top: calc(var(--spacing-small) + 8rem);
-  margin-top: calc(var(--spacing-medium) - var(--spacing-small));
+  margin-bottom: 16px;
+  margin-left: calc(var(--spacing-small) + 8rem);
+  top: calc(var(--spacing-medium) - var(--spacing-small));
   padding-top: var(--spacing-x-small);
+
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
 }

@@ -77,6 +77,7 @@ export type Type =
   | 'pxToRem'
   | 'remToPx'
   | 'handleFontSize'
+  | 'handleLineHeight'
 
 export type RuleOPType = 'singleTest' | 'allTest'
 
