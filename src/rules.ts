@@ -5,6 +5,7 @@ import { pxToSpacing } from './rules/pxToSpacing'
 import { remToSpacing } from './rules/remToSpacing'
 import { spacingInfo } from './rules/spacingInfo'
 import { handleFontSize } from './rules/handleFontSize'
+import { handleLineHeight } from './rules/handleLineHeight'
 
 export const RULES: Rule[] = []
 
@@ -15,6 +16,7 @@ export function initRules() {
     pxToSpacing(),
     remToSpacing(),
     handleFontSize(),
+    handleLineHeight(),
     spacingInfo()
   )
 }

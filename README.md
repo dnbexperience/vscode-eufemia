@@ -15,13 +15,28 @@ Spacing types are Eufemia spatial system units like; large, medium, small. They 
 ```css
 div {
   margin-top: var(--spacing-small); /* 1rem (16px) */
+  top: calc(
+    var(--spacing-medium) + var(--spacing-small)
+  ); /* 2.5rem (40px) */
 }
 ```
 
-- Convert pixel values to "spacing types". Effects CSS properties like margin, padding etc.
-- When cursor is on line, show "spacing types" summary in rem and pixel.
+- Convert `px` values to "spacing types". Effects CSS properties like margin, padding etc.
+- When cursor is on line, show "spacing types" `calc` summary in `rem` and pixels.
 
 ### Other pixel values
 
-- Convert pixel values to rem value.
-- When cursor is on line, show rem value of pixel.
+- Convert `px` values to `rem` value.
+- When cursor is on line, show `rem` value of pixels.
+
+### font-size and line-height
+
+- Convert `px` and `rem` values to e.g. `var(--font-size-small)`.
+- When cursor is on line, show `rem` and `px` value of `var(--font-size-small)`.
+
+```css
+span {
+  font-size: var(--font-size-basis); /* 1.125rem (18px) */
+  line-height: var(--line-height-basis); /* 1.125rem (18px) */
+}
+```

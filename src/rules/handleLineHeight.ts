@@ -3,13 +3,13 @@ import { cleanProperties, findNearestTypes } from '../extension/convert'
 import { conf, localize } from '../extension/init'
 import { Rule } from '../extension/types'
 
-const typeId = `font\-size`
+const typeId = `line\-height`
 const varId = `\-\-${typeId}\-`
 const sizes = cleanProperties(varId, properties)
 
-export const handleFontSize = (): Rule => {
+export const handleLineHeight = (): Rule => {
   return {
-    type: 'handleFontSize',
+    type: 'handleLineHeight',
     convert: {
       allTest: /([-]?[\d.]+)(px|rem)/g,
       singleTest: /([-]?[\d.]+)(p(x)?|r(e|em)?)$/,
@@ -26,12 +26,12 @@ export const handleFontSize = (): Rule => {
         const label = `${fromValue}${unit} 👉 ${toValue}`
 
         return {
-          type: 'handleFontSize',
+          type: 'handleLineHeight',
           text,
           value: toValue,
           label,
           documentation: localize(
-            'handleFontSize.documentation',
+            'handleLineHeight.documentation',
             `Convert \`{0}${unit}\` to \`{1}\``,
             fromValue,
             toValue,
@@ -59,11 +59,11 @@ export const handleFontSize = (): Rule => {
         const px = +(remVal * conf.rootFontSize).toFixed(conf.fixedDigits)
 
         return {
-          type: 'handleFontSize',
+          type: 'handleLineHeight',
           from: calcText,
           to: `${rem}rem (${px}px)`,
           documentation: localize(
-            'handleFontSize.documentation.hover',
+            'handleLineHeight.documentation.hover',
             'Converted from `{0}`',
             rem,
             conf.rootFontSize
