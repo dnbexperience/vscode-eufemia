@@ -8,8 +8,8 @@ export const remToSpacing = (): Rule => {
     convert: {
       allTest: /([-]?[\d.]+)rem/g,
       singleTest: /([-]?[\d.]+)r(e|em)?$/,
-      fnCondition: (text) => isSpacing(text),
-      fn: (text) => {
+      convertCondition: (line) => isSpacing(line),
+      convertHandler: (text) => {
         const px = parseFloat(text)
         const resultValue = +(px * conf.rootFontSize).toFixed(
           conf.fixedDigits

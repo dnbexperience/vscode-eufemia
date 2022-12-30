@@ -7,11 +7,11 @@ export const spacingInfo = (): Rule => {
     type: 'spacingInfo',
     hover: {
       hoverTest: /var\(--spacing-([^)]*)\)/,
-      hoverFn: (calcText) => {
+      hoverHandler: (text) => {
         let remVal = 0
 
         const patterns = spacePatterns as Record<string, number>
-        const spaceTypes = calcText.matchAll(
+        const spaceTypes = text.matchAll(
           /([+-]|)\s{0,}var\(--spacing-([^)]*)\)/g
         )
 
@@ -36,7 +36,7 @@ export const spacingInfo = (): Rule => {
 
         return {
           type: 'spacingInfo',
-          from: calcText,
+          from: text,
           to: `${rem}rem (${px}px)`,
           documentation: localize(
             'spacingInfo.documentation.hover',

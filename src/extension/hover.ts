@@ -8,6 +8,7 @@ import {
 } from 'vscode'
 import { conf, isIngore } from './helpers'
 import { RULES } from '../rules'
+import { Line } from './types'
 
 export default class implements HoverProvider {
   private getText(line: string, pos: Position): string {
@@ -32,7 +33,7 @@ export default class implements HoverProvider {
     }
 
     const line = doc.lineAt(pos.line).text.trim()
-    const text = this.getText(line, pos)
+    const text = this.getText(line, pos) as Line
 
     if (!text) {
       return null
@@ -40,8 +41,14 @@ export default class implements HoverProvider {
 
     let results = RULES.filter((w) => w?.hover?.hoverTest?.test(text))
       .map((rule) => {
-        if (typeof rule.hover?.hoverFn === 'function') {
-          return rule.hover.hoverFn(text)
+        if (typeof rule.hover?.hoverCondition === 'function') {
+          if (!rule.hover.hoverCondition(line)) {
+            return null
+          }
+        }
+
+        if (typeof rule.hover?.hoverHandler === 'function') {
+          return rule.hover.hoverHandler(text, line)
         }
       })
       .filter((h) => h !== null && h?.documentation)

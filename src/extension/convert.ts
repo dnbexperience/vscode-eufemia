@@ -1,11 +1,11 @@
-import { ConvertResult, Rule, RuleOPType, Type } from './types'
+import { ConvertResult, Line, Rule, RuleOPType, Type } from './types'
 import { RULES } from '../rules'
 import { Position, Range, Selection, TextEditor } from 'vscode'
 import { isIngore } from './helpers'
 
 export class CSSProcessor {
-  convert(text: string): ConvertResult[] | null {
-    const rules = this.getConvertRule('singleTest', text)
+  convert(line: Line): ConvertResult[] | null {
+    const rules = this.getConvertRule('singleTest', line)
 
     if (rules.length === 0) {
       return null
@@ -14,14 +14,14 @@ export class CSSProcessor {
     const result = rules
       .map((i) => {
         if (
-          typeof i.rule.convert?.fnCondition === 'function' &&
-          !i.rule.convert.fnCondition(text)
+          typeof i.rule.convert?.convertCondition === 'function' &&
+          !i.rule.convert.convertCondition(line)
         ) {
           return null
         }
 
-        if (typeof i.rule.convert?.fn === 'function') {
-          return i.rule.convert.fn(i.text, text)
+        if (typeof i.rule.convert?.convertHandler === 'function') {
+          return i.rule.convert.convertHandler(i.text, line)
         }
 
         return null
@@ -35,27 +35,27 @@ export class CSSProcessor {
     return null
   }
 
-  convertAll(code: string, ingores: string[], type: Type): string {
-    if (!code) {
-      return code
+  convertAll(line: string, ingores: string[], type: Type): string {
+    if (!line) {
+      return line
     }
 
     const rule = RULES.find((w) => w.type === type) as Rule
 
     if (!rule.convert?.allTest) {
-      return code
+      return line
     }
 
-    return code.replace(rule.convert?.allTest, (word: string) => {
+    return line.replace(rule.convert?.allTest, (word: string) => {
       if (ingores.includes(word)) {
         return word
       }
 
-      if (!rule.convert?.fn) {
+      if (!rule.convert?.convertHandler) {
         return word
       }
 
-      const res = rule.convert.fn(word)
+      const res = rule.convert.convertHandler(word, line)
 
       if (res) {
         return res.value
@@ -131,13 +131,28 @@ export class CSSProcessor {
       selection = new Range(start, end)
     }
 
-    const text = doc.getText(selection)
+    const line = doc.getText(selection) as Line
 
     textEditor.edit((builder) => {
       builder.replace(
         selection,
-        this.convertAll(text, ingoresViaCommand, type)
+        this.convertAll(line, ingoresViaCommand, type)
       )
     })
   }
+}
+
+export function cleanProperties(
+  findKey: string,
+  properties: Record<string, string>
+): Record<string, string> {
+  return Object.entries(properties).reduce(
+    (acc: Record<string, string>, [key, value]) => {
+      if (key.includes(findKey)) {
+        acc[key.replace(findKey, '')] = value.replace('rem', '')
+      }
+      return acc
+    },
+    {}
+  )
 }

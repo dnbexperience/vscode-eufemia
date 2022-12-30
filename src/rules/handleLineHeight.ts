@@ -1,10 +1,6 @@
 import properties from '@dnb/eufemia/style/properties'
-import {
-  cleanProperties,
-  conf,
-  findNearestTypes,
-  localize,
-} from '../extension/helpers'
+import { cleanProperties } from '../extension/convert'
+import { conf, findNearestTypes, localize } from '../extension/helpers'
 import { Rule } from '../extension/types'
 
 const typeId = `line\-height`
@@ -17,8 +13,8 @@ export const handleLineHeight = (): Rule => {
     convert: {
       allTest: /([-]?[\d.]+)(px|rem)/g,
       singleTest: /([-]?[\d.]+)(p(x)?|r(e|em)?)$/,
-      fnCondition: (text) => new RegExp(typeId).test(text),
-      fn: (text, line) => {
+      convertCondition: (line) => new RegExp(typeId).test(line),
+      convertHandler: (text, line) => {
         const isPx = line ? /p(x)?/.test(line) : false
         const fromValue = parseFloat(text)
         const resultValue = +(
@@ -46,10 +42,11 @@ export const handleLineHeight = (): Rule => {
     },
     hover: {
       hoverTest: new RegExp(`var\\(${varId}([^)]*)\\)`),
-      hoverFn: (calcText) => {
+      hoverCondition: (line) => new RegExp(typeId + ':').test(line),
+      hoverHandler: (text) => {
         let remVal = 0
 
-        const sizeTypes = calcText.matchAll(
+        const sizeTypes = text.matchAll(
           new RegExp(`var\\(${varId}([^)]*)\\)`, 'g')
         )
 
@@ -64,7 +61,7 @@ export const handleLineHeight = (): Rule => {
 
         return {
           type: 'handleLineHeight',
-          from: calcText,
+          from: text,
           to: `${rem}rem (${px}px)`,
           documentation: localize(
             'handleLineHeight.documentation.hover',

@@ -7,7 +7,7 @@ export const remToPx = (): Rule => {
     convert: {
       allTest: /([-]?[\d.]+)rem/g,
       singleTest: /([-]?[\d.]+)r(e|em)?$/,
-      fn: (text) => {
+      convertHandler: (text) => {
         const px = parseFloat(text)
         const resultValue = +(px * conf.rootFontSize).toFixed(
           conf.fixedDigits
@@ -36,7 +36,7 @@ export const remToPx = (): Rule => {
     },
     hover: {
       hoverTest: /(?<!var.*)([-]?[\d.]+)rem/,
-      hoverFn: (remText) => {
+      hoverHandler: (remText) => {
         const rem = parseFloat(remText)
         const val = +(rem * conf.rootFontSize).toFixed(conf.fixedDigits)
 

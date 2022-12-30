@@ -64,19 +64,21 @@ export type Config = {
   languages: string[]
 }
 
+export type Line = string
+
 export type Rule = {
   type: Type
   convert?: {
     allTest?: RegExp
     singleTest?: RegExp
-    fn?: (text: string, line?: string) => ConvertResult
-    fnCondition?: (text: string) => boolean
+    convertHandler?: (text: string, line?: Line) => ConvertResult
+    convertCondition?: (line: Line) => boolean
   }
   hover?: {
     hoverTest?: RegExp | null
-    hoverFn?: (text: string) => HoverResult | null
+    hoverHandler?: (text: string, line?: Line) => HoverResult | null
+    hoverCondition?: (line: Line) => boolean
   }
-  // documentation?: string
 }
 
 export type RuleOPType = 'singleTest' | 'allTest'
