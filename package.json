@@ -23,6 +23,7 @@
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
+    "publish": "yarn compile && vsce publish",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
