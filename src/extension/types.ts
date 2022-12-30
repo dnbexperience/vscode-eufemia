@@ -1,3 +1,12 @@
+export type Type =
+  | 'pxToSpacing'
+  | 'remToSpacing'
+  | 'spacingInfo'
+  | 'pxToRem'
+  | 'remToPx'
+  | 'handleFontSize'
+  | 'handleLineHeight'
+
 export type Config = {
   /**
    * root font-size (unit: px), default: 16
@@ -69,15 +78,6 @@ export type Rule = {
   }
   // documentation?: string
 }
-
-export type Type =
-  | 'pxToSpacing'
-  | 'remToSpacing'
-  | 'spacingInfo'
-  | 'pxToRem'
-  | 'remToPx'
-  | 'handleFontSize'
-  | 'handleLineHeight'
 
 export type RuleOPType = 'singleTest' | 'allTest'
 
