@@ -1,5 +1,5 @@
 import { calc } from '@dnb/eufemia/components/space/SpacingUtils'
-import { conf, isSpacing, localize } from '../extension/init'
+import { conf, isSpacing, localize } from '../extension/helpers'
 import { Rule } from '../extension/types'
 
 export const remToSpacing = (): Rule => {

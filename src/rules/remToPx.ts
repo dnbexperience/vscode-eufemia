@@ -1,4 +1,4 @@
-import { cleanZero, conf, localize } from '../extension/init'
+import { cleanZero, conf, localize } from '../extension/helpers'
 import { Rule } from '../extension/types'
 
 export const remToPx = (): Rule => {

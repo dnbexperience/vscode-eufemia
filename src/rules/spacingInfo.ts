@@ -1,5 +1,5 @@
 import { spacePatterns } from '@dnb/eufemia/components/space/SpacingUtils'
-import { conf, localize } from '../extension/init'
+import { conf, localize } from '../extension/helpers'
 import { Rule } from '../extension/types'
 
 export const spacingInfo = (): Rule => {

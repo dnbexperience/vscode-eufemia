@@ -1,7 +1,7 @@
 import { ConvertResult, Rule, RuleOPType, Type } from './types'
 import { RULES } from '../rules'
 import { Position, Range, Selection, TextEditor } from 'vscode'
-import { isIngore } from './init'
+import { isIngore } from './helpers'
 
 export class CSSProcessor {
   convert(text: string): ConvertResult[] | null {

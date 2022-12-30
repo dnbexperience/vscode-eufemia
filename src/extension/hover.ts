@@ -6,7 +6,7 @@ import {
   ProviderResult,
   TextDocument,
 } from 'vscode'
-import { conf, isIngore } from './init'
+import { conf, isIngore } from './helpers'
 import { RULES } from '../rules'
 
 export default class implements HoverProvider {

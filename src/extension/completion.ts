@@ -7,7 +7,7 @@ import {
   Range,
   TextDocument,
 } from 'vscode'
-import { conf, isIngore } from './init'
+import { conf, isIngore } from './helpers'
 import { CSSProcessor } from './convert'
 
 export default class implements CompletionItemProvider {

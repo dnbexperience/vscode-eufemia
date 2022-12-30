@@ -10,7 +10,7 @@ import {
   ThemeColor,
   window,
 } from 'vscode'
-import { conf, isIngore } from './init'
+import { conf, isIngore } from './helpers'
 import { HoverResult } from './types'
 import { RULES } from '../rules'
 
