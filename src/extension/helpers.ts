@@ -108,3 +108,24 @@ export function cleanZero(val: number) {
 
   return val + ''
 }
+
+export function findNearestTypes(
+  size: number,
+  list: Record<string, string>,
+  initialValue = 'basis'
+) {
+  const items = Object.entries(list).sort(
+    ([, a], [, b]) => parseFloat(a) - parseFloat(b)
+  )
+  const last = items.at(-1)
+
+  for (const item of items) {
+    const [type, value] = item
+    if (parseFloat(value) >= size || last?.[0] === type) {
+      initialValue = type
+      break
+    }
+  }
+
+  return initialValue
+}

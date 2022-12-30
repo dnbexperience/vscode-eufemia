@@ -12,7 +12,7 @@ body {
   margin-top: 1rem;
   margin-bottom: 16px;
   margin-left: calc(var(--spacing-small) + 8rem);
-  top: calc(var(--spacing-medium) - var(--spacing-small));
+  top: calc(var(--spacing-medium) + var(--spacing-small));
   padding-top: var(--spacing-x-small);
 
   font-size: var(--font-size-small);

@@ -1,5 +1,5 @@
 import { calc } from '@dnb/eufemia/components/space/SpacingUtils'
-import { conf, isSpacing, localize } from '../extension/init'
+import { conf, isSpacing, localize } from '../extension/helpers'
 import { Rule } from '../extension/types'
 
 export const remToSpacing = (): Rule => {
@@ -8,8 +8,8 @@ export const remToSpacing = (): Rule => {
     convert: {
       allTest: /([-]?[\d.]+)rem/g,
       singleTest: /([-]?[\d.]+)r(e|em)?$/,
-      fnCondition: (text) => isSpacing(text),
-      fn: (text) => {
+      convertCondition: (line) => isSpacing(line),
+      convertHandler: (text) => {
         const px = parseFloat(text)
         const resultValue = +(px * conf.rootFontSize).toFixed(
           conf.fixedDigits

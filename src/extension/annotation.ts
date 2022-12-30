@@ -10,8 +10,8 @@ import {
   ThemeColor,
   window,
 } from 'vscode'
-import { conf, isIngore } from './init'
-import { HoverResult } from './types'
+import { conf, isIngore } from './helpers'
+import { HoverResult, Line } from './types'
 import { RULES } from '../rules'
 
 const annotationDecoration = window.createTextEditorDecorationType({
@@ -125,13 +125,13 @@ export class LineAnnotation implements Disposable {
     doc: TextDocument,
     lineNumber: number
   ): string | null {
-    const lineText = doc.lineAt(lineNumber).text.trim()
+    const line = doc.lineAt(lineNumber).text.trim() as Line
 
-    if (lineText.length <= 0) {
+    if (line.length <= 0) {
       return null
     }
 
-    const values = lineText.match(/([.0-9]+(px|rem))|var\((.*)\)/g)
+    const values = line.match(/([.0-9]+(px|rem))|var\((.*)\)/g)
 
     if (!values) {
       return null
@@ -142,8 +142,14 @@ export class LineAnnotation implements Disposable {
         const rule = RULES.filter((w) =>
           w.hover?.hoverTest?.test(text)
         ).map((h) => {
-          if (typeof h.hover?.hoverFn === 'function') {
-            return h.hover.hoverFn(text)
+          if (typeof h.hover?.hoverCondition === 'function') {
+            if (!h.hover.hoverCondition(line)) {
+              return null
+            }
+          }
+
+          if (typeof h.hover?.hoverHandler === 'function') {
+            return h.hover.hoverHandler(text, line)
           }
         })
 

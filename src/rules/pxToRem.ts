@@ -1,4 +1,4 @@
-import { cleanZero, conf, localize } from '../extension/init'
+import { cleanZero, conf, localize } from '../extension/helpers'
 import { Rule } from '../extension/types'
 
 export const pxToRem = (): Rule => {
@@ -7,7 +7,7 @@ export const pxToRem = (): Rule => {
     convert: {
       allTest: /([-]?[\d.]+)px/g,
       singleTest: /([-]?[\d.]+)p(x)?$/,
-      fn: (text) => {
+      convertHandler: (text) => {
         const px = parseFloat(text)
         const resultValue = +(px / conf.rootFontSize).toFixed(
           conf.fixedDigits
@@ -36,7 +36,7 @@ export const pxToRem = (): Rule => {
     },
     hover: {
       hoverTest: conf.remHover ? /(?<!var.*)([-]?[\d.]+)px/ : null,
-      hoverFn: (pxText) => {
+      hoverHandler: (pxText) => {
         const px = parseFloat(pxText)
         const val = +(px / conf.rootFontSize).toFixed(conf.fixedDigits)
 

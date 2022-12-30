@@ -3,7 +3,7 @@
   "displayName": "DNB Eufemia Tools",
   "description": "DNB Eufemia Design System Extension",
   "categories": [],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "publisher": "dnbexperience",
   "license": "SEE LICENSE IN LICENSE",
   "licenseUrl": "LICENSE",
@@ -23,6 +23,7 @@
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
+    "publish": "yarn compile && vsce publish",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",

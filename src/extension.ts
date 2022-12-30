@@ -1,6 +1,10 @@
 import { commands, ExtensionContext, languages, workspace } from 'vscode'
 import CssRemProvider from './extension/completion'
-import { conf, eufemiaConfigFileName, loadConfig } from './extension/init'
+import {
+  conf,
+  eufemiaConfigFileName,
+  loadConfig,
+} from './extension/helpers'
 import CssRemHoverProvider from './extension/hover'
 import { LineAnnotation } from './extension/annotation'
 import { CSSProcessor } from './extension/convert'
