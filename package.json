@@ -183,7 +183,7 @@
     "jsonc-parser": "^3.2.0"
   },
   "devDependencies": {
-    "@eufemia/eslint-plugin": "^1.0.2",
+    "@eufemia/eslint-plugin": "^1.0.5",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
