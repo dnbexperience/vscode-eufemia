@@ -29,8 +29,9 @@
     "lint": "eslint src --ext ts",
     "pretest": "yarn run test:compile && yarn run compile && yarn run lint",
     "test:compile": "tsc -p . --outDir out",
-    "test:watch": "tsc -p . -w --outDir out",
-    "test": "node ./out/__tests__/runTest.js"
+    "test:compile:watch": "tsc -p . -w --outDir out",
+    "test": "node ./out/__tests__/runTest.js",
+    "test:watch": "node ./out/__tests__/runTest.js --watch --watch-files ./src/**/*"
   },
   "activationEvents": [
     "onLanguage:css",
