@@ -70,6 +70,8 @@ function initLanguages() {
     'sass',
     'javascriptreact',
     'typescriptreact',
+    'javascript',
+    'typescript',
   ]
 }
 
