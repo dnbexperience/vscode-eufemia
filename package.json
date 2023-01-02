@@ -5,6 +5,7 @@
   "categories": [],
   "version": "1.2.2",
   "publisher": "dnbexperience",
+  "author": "Tobias Høegh <tobias.hoegh@dnb.no>",
   "license": "SEE LICENSE IN LICENSE",
   "licenseUrl": "LICENSE",
   "repository": {
@@ -180,6 +181,7 @@
     "jsonc-parser": "^3.2.0"
   },
   "devDependencies": {
+    "@eufemia/eslint-plugin": "^1.0.1",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
