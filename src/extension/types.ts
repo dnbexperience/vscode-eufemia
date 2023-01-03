@@ -1,9 +1,7 @@
 export type Type =
-  | 'pxToSpacing'
-  | 'remToSpacing'
-  | 'spacingInfo'
-  | 'pxToRem'
-  | 'remToPx'
+  | 'handleValues'
+  | 'handleSpacing'
+  | 'handleCalc'
   | 'handleFontSize'
   | 'handleLineHeight'
 

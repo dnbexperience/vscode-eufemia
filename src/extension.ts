@@ -38,29 +38,29 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(
     commands.registerTextEditorCommand(
-      'extension.eufemia.px-to-spacing',
-      (textEditor) => {
-        process.modifyDocument(
-          textEditor,
-          ingoresViaCommand,
-          'pxToSpacing'
-        )
-      }
-    ),
-    commands.registerTextEditorCommand(
       'extension.eufemia.px-to-rem',
       (textEditor) => {
-        process.modifyDocument(textEditor, ingoresViaCommand, 'pxToRem')
+        process.modifyDocument(
+          textEditor,
+          ingoresViaCommand,
+          'handleValues'
+        )
       }
     ),
     commands.registerTextEditorCommand(
-      'extension.eufemia.rem-to-spacing',
+      'extension.eufemia.convert-to-spacing',
       (textEditor) => {
         process.modifyDocument(
           textEditor,
           ingoresViaCommand,
-          'remToSpacing'
+          'handleSpacing'
         )
+      }
+    ),
+    commands.registerTextEditorCommand(
+      'extension.eufemia.convert-to-calc',
+      (textEditor) => {
+        process.modifyDocument(textEditor, ingoresViaCommand, 'handleCalc')
       }
     )
   )

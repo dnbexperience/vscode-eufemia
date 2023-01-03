@@ -3,7 +3,7 @@
   "displayName": "DNB Eufemia Tools",
   "description": "DNB Eufemia Design System Extension",
   "categories": [],
-  "version": "1.2.4",
+  "version": "1.3.0",
   "publisher": "dnbexperience",
   "author": "Tobias Høegh <tobias.hoegh@dnb.no>",
   "license": "SEE LICENSE IN LICENSE",
@@ -46,16 +46,16 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.eufemia.px-to-spacing",
-        "title": "Eufemia: px to spacing types"
+        "command": "extension.eufemia.convert-to-spacing",
+        "title": "Eufemia: convert to spacing types"
       },
       {
-        "command": "extension.eufemia.rem-to-spacing",
-        "title": "Eufemia: rem to spacing types"
+        "command": "extension.eufemia.convert-to-calc",
+        "title": "Eufemia: convert to JavaScript calc"
       },
       {
         "command": "extension.eufemia.px-to-rem",
-        "title": "Eufemia: px to rem"
+        "title": "Eufemia: convert px to rem"
       }
     ],
     "configuration": {

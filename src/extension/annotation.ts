@@ -131,7 +131,9 @@ export class LineAnnotation implements Disposable {
       return null
     }
 
-    const values = line.match(/([.0-9]+(px|rem))|var\((.*)\)/g)
+    const values = line.match(
+      /([.0-9]+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
+    )
 
     if (!values) {
       return null
