@@ -4,7 +4,6 @@ import { parse } from 'jsonc-parser'
 import { join } from 'path'
 import { Uri, workspace } from 'vscode'
 import { Config } from './types'
-import { initRules } from '../rules'
 
 export let conf!: Config
 export const eufemiaConfigFileName = '.eufemia'
@@ -25,10 +24,12 @@ function loadConfigViaFile() {
     workspace.workspaceFolders[0].uri.fsPath,
     eufemiaConfigFileName
   )
+
   if (!existsSync(eufemiaConfigPath)) {
-    console.log(`Not found file: ${eufemiaConfigPath}`)
+    console.warn(`File not found: ${eufemiaConfigPath}`)
     return
   }
+
   try {
     const res = parse(readFileSync(eufemiaConfigPath).toString('utf-8'))
     conf = {
@@ -88,9 +89,6 @@ export function loadConfig() {
   loadConfigViaFile()
   initIngores()
   initLanguages()
-  initRules()
-
-  console.log('Current config', conf)
 }
 
 export function isIngore(uri: Uri) {
@@ -130,4 +128,19 @@ export function findNearestTypes(
   }
 
   return initialValue
+}
+
+export function cleanProperties(
+  findKey: string,
+  properties: Record<string, string>
+): Record<string, string> {
+  return Object.entries(properties).reduce(
+    (acc: Record<string, string>, [key, value]) => {
+      if (key.includes(findKey)) {
+        acc[key.replace(findKey, '')] = value.replace('rem', '')
+      }
+      return acc
+    },
+    {}
+  )
 }

@@ -1,5 +1,5 @@
 import { cleanZero, conf, localize } from '../extension/helpers'
-import { Rule } from '../extension/types'
+import type { Rule } from '../extension/types'
 
 export const handleValues = (): Rule => {
   return {

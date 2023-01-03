@@ -1,7 +1,11 @@
 import properties from '@dnb/eufemia/style/properties'
-import { cleanProperties } from '../extension/convert'
-import { conf, findNearestTypes, localize } from '../extension/helpers'
-import { Rule } from '../extension/types'
+import {
+  conf,
+  findNearestTypes,
+  localize,
+  cleanProperties,
+} from '../extension/helpers'
+import type { Rule } from '../extension/types'
 
 const typeId = `font\-size`
 const varId = `\-\-${typeId}\-`
@@ -11,8 +15,8 @@ export const handleFontSize = (): Rule => {
   return {
     type: 'handleFontSize',
     convert: {
-      allTest: /([-]?[\d.]+)(px|rem)/g,
-      singleTest: /([-]?[\d.]+)(p(x)?|r(e|em)?)$/,
+      allTest: /([\d.]+)(px|rem)/g,
+      singleTest: /([\d.]+)(p(x)?|r(e|em)?)$/,
       convertCondition: (line) => new RegExp(typeId).test(line),
       convertHandler: (text, line) => {
         const isPx = line ? /p(x)?/.test(line) : false

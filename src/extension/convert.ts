@@ -141,18 +141,3 @@ export class CSSProcessor {
     })
   }
 }
-
-export function cleanProperties(
-  findKey: string,
-  properties: Record<string, string>
-): Record<string, string> {
-  return Object.entries(properties).reduce(
-    (acc: Record<string, string>, [key, value]) => {
-      if (key.includes(findKey)) {
-        acc[key.replace(findKey, '')] = value.replace('rem', '')
-      }
-      return acc
-    },
-    {}
-  )
-}

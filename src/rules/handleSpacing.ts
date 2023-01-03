@@ -1,9 +1,9 @@
 import {
-  calc,
+  calc as calcSpacing,
   spacePatterns,
 } from '@dnb/eufemia/components/space/SpacingUtils'
 import { conf, isSpacing, localize } from '../extension/helpers'
-import { Rule } from '../extension/types'
+import type { Rule } from '../extension/types'
 
 export const handleSpacing = (): Rule => {
   return {
@@ -25,7 +25,7 @@ export const handleSpacing = (): Rule => {
 
         const unit = isPx ? 'px' : 'rem'
         const value = isPx ? px : rem
-        let toValue = calc(value + unit)
+        let toValue = calcSpacing(value + unit)
         if (toValue.split('var').length - 1 === 1) {
           toValue = toValue.replace(/calc\(([^)]*)\)/, '$1')
         }
