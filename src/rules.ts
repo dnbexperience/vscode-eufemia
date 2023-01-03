@@ -1,4 +1,4 @@
-import { Rule } from './extension/types'
+import type { Rule } from './extension/types'
 import { handleValues } from './rules/handleValues'
 import { handleSpacing } from './rules/handleSpacing'
 import { handleCalc } from './rules/handleCalc'

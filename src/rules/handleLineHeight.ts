@@ -1,7 +1,7 @@
 import properties from '@dnb/eufemia/style/properties'
 import { cleanProperties } from '../extension/convert'
 import { conf, findNearestTypes, localize } from '../extension/helpers'
-import { Rule } from '../extension/types'
+import type { Rule } from '../extension/types'
 
 const typeId = `line\-height`
 const varId = `\-\-${typeId}\-`

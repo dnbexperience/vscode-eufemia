@@ -3,7 +3,7 @@ import {
   spacePatterns,
 } from '@dnb/eufemia/components/space/SpacingUtils'
 import { conf, isSpacing, localize } from '../extension/helpers'
-import { Rule } from '../extension/types'
+import type { Rule } from '../extension/types'
 
 export const handleSpacing = (): Rule => {
   return {
