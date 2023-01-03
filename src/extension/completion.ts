@@ -11,7 +11,7 @@ import { conf, isIngore } from './helpers'
 import { CSSProcessor } from './convert'
 
 export default class implements CompletionItemProvider {
-  constructor(private lan: string, private process: CSSProcessor) {}
+  constructor(private lang: string, private process: CSSProcessor) {}
 
   provideCompletionItems(
     document: TextDocument,

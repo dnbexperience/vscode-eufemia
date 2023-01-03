@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { handleValues } from '../handleValues'
-import { loadConfig } from '../../extension/helpers'
+import { conf, loadConfig } from '../../extension/helpers'
 
 const config = JSON.parse(
   readFileSync(resolve(__dirname, '../../../.eufemia'), 'utf-8')
@@ -130,7 +130,7 @@ describe('hover', () => {
   })
 
   describe('hoverHandler', () => {
-    it('should convert px to rem', () => {
+    it('should show px to rem', () => {
       const rule = handleValues()
       const text = '-10.5px'
       const line = `margin-top: ${text};`
@@ -144,7 +144,7 @@ describe('hover', () => {
       })
     })
 
-    it('should convert rem to px', () => {
+    it('should show rem to px', () => {
       const rule = handleValues()
       const text = '-10.5rem'
       const line = `margin-top: ${text};`
