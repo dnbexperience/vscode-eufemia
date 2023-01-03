@@ -56,6 +56,12 @@ export function activate(context: ExtensionContext) {
           'handleSpacing'
         )
       }
+    ),
+    commands.registerTextEditorCommand(
+      'extension.eufemia.convert-to-calc',
+      (textEditor) => {
+        process.modifyDocument(textEditor, ingoresViaCommand, 'handleCalc')
+      }
     )
   )
 

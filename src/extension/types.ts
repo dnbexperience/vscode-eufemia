@@ -1,6 +1,7 @@
 export type Type =
   | 'handleValues'
   | 'handleSpacing'
+  | 'handleCalc'
   | 'handleFontSize'
   | 'handleLineHeight'
 
