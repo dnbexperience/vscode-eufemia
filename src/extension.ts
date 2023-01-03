@@ -5,6 +5,7 @@ import {
   eufemiaConfigFileName,
   loadConfig,
 } from './extension/helpers'
+import { initRules } from './rules'
 import CssRemHoverProvider from './extension/hover'
 import { LineAnnotation } from './extension/annotation'
 import { CSSProcessor } from './extension/convert'
@@ -12,8 +13,13 @@ import { CSSProcessor } from './extension/convert'
 let process: CSSProcessor
 
 export function activate(context: ExtensionContext) {
-  loadConfig()
-  workspace.onDidChangeConfiguration(() => loadConfig())
+  const init = () => {
+    loadConfig()
+    initRules()
+  }
+
+  init()
+  workspace.onDidChangeConfiguration(init)
 
   process = new CSSProcessor()
 

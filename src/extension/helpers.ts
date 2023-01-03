@@ -4,7 +4,6 @@ import { parse } from 'jsonc-parser'
 import { join } from 'path'
 import { Uri, workspace } from 'vscode'
 import { Config } from './types'
-import { initRules } from '../rules'
 
 export let conf!: Config
 export const eufemiaConfigFileName = '.eufemia'
@@ -88,7 +87,6 @@ export function loadConfig() {
   loadConfigViaFile()
   initIngores()
   initLanguages()
-  initRules()
 
   console.log('Current config', conf)
 }
