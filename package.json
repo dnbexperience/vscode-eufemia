@@ -28,11 +28,13 @@
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "lint": "eslint src --ext ts",
-    "pretest": "yarn test:compile && yarn compile && yarn lint",
-    "test:compile": "tsc -p . --outDir out",
-    "test:compile:watch": "tsc -p . -w --outDir out",
-    "test": "node ./out/__tests__/runTest.js",
-    "test:watch": "node ./out/__tests__/runTest.js --watch --watch-files ./src/**/*"
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "e2e:test:compile": "tsc -p . --outDir out",
+    "e2e:test:compile:watch": "tsc -p . -w --outDir out",
+    "e2e:test": "node ./out/__tests__/runTest.js",
+    "e2e:test:watch": "node ./out/__tests__/runTest.js --watch --watch-files ./src/**/*",
+    "pretest": "yarn e2e:test:compile && yarn compile && yarn lint"
   },
   "activationEvents": [
     "onLanguage:css",
