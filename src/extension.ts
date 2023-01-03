@@ -38,28 +38,22 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(
     commands.registerTextEditorCommand(
-      'extension.eufemia.px-to-spacing',
+      'extension.eufemia.px-to-rem',
       (textEditor) => {
         process.modifyDocument(
           textEditor,
           ingoresViaCommand,
-          'pxToSpacing'
+          'handleValues'
         )
       }
     ),
     commands.registerTextEditorCommand(
-      'extension.eufemia.px-to-rem',
-      (textEditor) => {
-        process.modifyDocument(textEditor, ingoresViaCommand, 'pxToRem')
-      }
-    ),
-    commands.registerTextEditorCommand(
-      'extension.eufemia.rem-to-spacing',
+      'extension.eufemia.convert-to-spacing',
       (textEditor) => {
         process.modifyDocument(
           textEditor,
           ingoresViaCommand,
-          'remToSpacing'
+          'handleSpacing'
         )
       }
     )

@@ -46,16 +46,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.eufemia.px-to-spacing",
-        "title": "Eufemia: px to spacing types"
-      },
-      {
-        "command": "extension.eufemia.rem-to-spacing",
-        "title": "Eufemia: rem to spacing types"
+        "command": "extension.eufemia.convert-to-spacing",
+        "title": "Eufemia: convert to spacing types"
       },
       {
         "command": "extension.eufemia.px-to-rem",
-        "title": "Eufemia: px to rem"
+        "title": "Eufemia: convert px to rem"
       }
     ],
     "configuration": {
