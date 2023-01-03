@@ -10,19 +10,20 @@ export const remToSpacing = (): Rule => {
       singleTest: /([-]?[\d.]+)r(e|em)?$/,
       convertCondition: (line) => isSpacing(line),
       convertHandler: (text) => {
-        const px = parseFloat(text)
-        const resultValue = +(px * conf.rootFontSize).toFixed(
-          conf.fixedDigits
-        )
-        const value = calc(px + 'px')
-        const label = `${px}rem 👉 ${value}`
+        const rem = parseFloat(text)
+        const px = +(rem * conf.rootFontSize).toFixed(conf.fixedDigits)
+        let value = calc(rem + 'rem')
+        if (value.split('var').length - 1 === 1) {
+          value = value.replace(/calc\(([^)]*)\)/, '$1')
+        }
+        const label = `${rem}rem 👉 ${value}`
 
         return {
           type: 'remToSpacing',
           text,
           px: `${px}px`,
           pxValue: px,
-          remValue: resultValue,
+          remValue: rem,
           rem: value,
           value,
           label,
