@@ -44,9 +44,9 @@ export const handleValues = (): Rule => {
       },
     },
     hover: {
-      hoverTest: /(?<!var.*)([-]?[\d.]+)(px|rem)/,
+      hoverTest: /(?<!var.*)(?<!\/\/.*)([-]?[\d.]+)(px|rem)/,
       hoverHandler: (text, line) => {
-        const isPx = /([-]?[\d.]+)p(x)?/.test(line || 'px')
+        const isPx = /(?<!\/\/.*)([-]?[\d.]+)p(x)?/.test(line || 'px')
         const fromValue = parseFloat(text)
         const rem = +(
           isPx ? fromValue / conf.rootFontSize : fromValue
@@ -66,8 +66,8 @@ export const handleValues = (): Rule => {
           to: `${toValue}${toUnit}`,
           documentation: localize(
             'handleValues.documentation.hover',
-            `Converted from \`{0}\``,
-            fromValue + fromUnit,
+            `Equivalent to \`{0}\``,
+            toValue + toUnit,
             conf.rootFontSize
           ),
         }

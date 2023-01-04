@@ -181,7 +181,7 @@ describe('hover', () => {
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `3`',
+        documentation: 'Equivalent to `3`',
         from: 'var(--font-size-xx-large)',
         to: '3rem (48px)',
         type: 'handleFontSize',

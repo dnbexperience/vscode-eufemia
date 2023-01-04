@@ -83,12 +83,6 @@ export const handleSpacing = (): Rule => {
           type: 'handleSpacing',
           from: text,
           to: `${rem}rem (${px}px)`,
-          documentation: localize(
-            'handleSpacing.documentation.hover',
-            'Converted from `{0}`',
-            rem,
-            conf.rootFontSize
-          ),
         }
       },
     },

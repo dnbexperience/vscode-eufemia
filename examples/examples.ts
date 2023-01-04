@@ -9,6 +9,6 @@ const Component = styled.div`
   top: calc(var(--spacing-medium) + var(--spacing-small));
   padding-top: var(--spacing-x-small);
 
-  ${calc('small', 'large')}
-  ${calc('small large')}
+  margin-bottom: ${calc('small', 'large')};
+  margin-bottom: ${calc('small large')};
 `
