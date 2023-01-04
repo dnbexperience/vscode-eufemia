@@ -68,7 +68,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: "Convert 10.5px to calc('x-small')",
+        documentation: "Convert `10.5px` to `calc('x-small')`",
         label: "10.5px 👉 calc('x-small')",
         px: '10.5px',
         pxValue: 10.5,
@@ -88,7 +88,7 @@ describe('convert', () => {
 
       expect(result).toEqual({
         documentation:
-          "Convert 10.5rem to calc('xx-large', 'xx-large', 'xx-large')",
+          "Convert `10.5rem` to `calc('xx-large', 'xx-large', 'xx-large')`",
         label: "10.5rem 👉 calc('xx-large', 'xx-large', 'xx-large')",
         px: '168px',
         pxValue: 168,
@@ -107,7 +107,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: "Convert 1rem to calc('small')",
+        documentation: "Convert `1rem` to `calc('small')`",
         label: "1rem 👉 calc('small')",
         px: '16px',
         pxValue: 16,

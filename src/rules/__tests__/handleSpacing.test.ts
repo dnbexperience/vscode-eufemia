@@ -68,7 +68,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert 10.5px to var(--spacing-x-small)',
+        documentation: 'Convert `10.5px` to `var(--spacing-x-small)`',
         label: '10.5px 👉 var(--spacing-x-small)',
         px: '10.5px',
         pxValue: 10.5,
@@ -88,7 +88,7 @@ describe('convert', () => {
 
       expect(result).toEqual({
         documentation:
-          'Convert 10.5rem to calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))',
+          'Convert `10.5rem` to `calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))`',
         label:
           '10.5rem 👉 calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))',
         px: '168px',
@@ -109,7 +109,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert 1rem to var(--spacing-small)',
+        documentation: 'Convert `1rem` to `var(--spacing-small)`',
         label: '1rem 👉 var(--spacing-small)',
         px: '16px',
         pxValue: 16,

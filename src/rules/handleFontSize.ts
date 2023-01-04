@@ -36,8 +36,8 @@ export const handleFontSize = (): Rule => {
           label,
           documentation: localize(
             'handleFontSize.documentation',
-            `Convert \`{0}${unit}\` to \`{1}\``,
-            fromValue,
+            'Convert `{0}` to `{1}`',
+            fromValue + unit,
             toValue,
             conf.rootFontSize
           ),

@@ -35,9 +35,9 @@ export const handleValues = (): Rule => {
           label,
           documentation: localize(
             'handleValues.documentation',
-            `Convert {0}${fromUnit} to {1}${toUnit}`,
-            fromValue,
-            toValue,
+            'Convert `{0}` to `{1}`',
+            fromValue + fromUnit,
+            toValue + toUnit,
             conf.rootFontSize
           ),
         }
@@ -66,7 +66,7 @@ export const handleValues = (): Rule => {
           to: `${toValue}${toUnit}`,
           documentation: localize(
             'handleValues.documentation.hover',
-            `Equivalent to \`{0}\``,
+            'Equivalent to `{0}`',
             toValue + toUnit,
             conf.rootFontSize
           ),
