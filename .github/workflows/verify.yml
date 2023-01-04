@@ -1,0 +1,48 @@
+name: Verify
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!**--skip-ci'
+      - '!wip/**'
+      - '!experiments/**'
+  pull_request:
+    branches:
+      - 'main'
+    types: [opened]
+
+jobs:
+  action:
+    name: Verify Action
+
+    runs-on: ubuntu-latest
+
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
+
+      - name: Use node_modules cache
+        uses: actions/cache@v3
+        id: modules-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ secrets.CACHE_VERSION }}-${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ secrets.CACHE_VERSION }}-${{ runner.os }}-modules-
+
+      - name: Install dependencies
+        if: steps.modules-cache.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+
+      - name: Run tests
+        run: yarn test

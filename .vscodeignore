@@ -7,7 +7,8 @@ src/**
 .history/**
 .yarn/**
 .yarnrc
-webpack.config.js
+vitest.config.ts
+.babelrc
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
