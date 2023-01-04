@@ -62,6 +62,10 @@ export const handleCalc = (): Rule => {
           remVal += patterns[space]
         })
 
+        if (isNaN(remVal)) {
+          return null
+        }
+
         const rem = +remVal.toFixed(conf.fixedDigits)
         const px = +(remVal * conf.rootFontSize).toFixed(conf.fixedDigits)
 
@@ -69,12 +73,6 @@ export const handleCalc = (): Rule => {
           type: 'handleCalc',
           from: text,
           to: `${rem}rem (${px}px)`,
-          documentation: localize(
-            'handleCalc.documentation.hover',
-            'Converted from `{0}`',
-            rem,
-            conf.rootFontSize
-          ),
         }
       },
     },

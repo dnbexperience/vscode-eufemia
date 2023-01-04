@@ -69,7 +69,7 @@ export const handleFontSize = (): Rule => {
           to: `${rem}rem (${px}px)`,
           documentation: localize(
             'handleFontSize.documentation.hover',
-            'Converted from `{0}`',
+            'Equivalent to `{0}`',
             rem,
             conf.rootFontSize
           ),

@@ -95,7 +95,7 @@ export type ConvertResult = {
 
 export type HoverResult = {
   type: string
-  documentation: string
   from: string
   to: string
+  documentation?: string
 }

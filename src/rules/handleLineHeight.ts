@@ -69,7 +69,7 @@ export const handleLineHeight = (): Rule => {
           to: `${rem}rem (${px}px)`,
           documentation: localize(
             'handleLineHeight.documentation.hover',
-            'Converted from `{0}`',
+            'Equivalent to `{0}`',
             rem,
             conf.rootFontSize
           ),

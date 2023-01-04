@@ -157,11 +157,19 @@ describe('hover', () => {
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `6`',
         from: "calc('large', 'large', 'large')",
         to: '6rem (96px)',
         type: 'handleCalc',
       })
+    })
+
+    it('should return null when invalid value was given', () => {
+      const rule = handleCalc()
+      const text = `calc('large small')`
+      const line = `margin-top: ${text};`
+      const result = rule.hover?.hoverHandler?.(text, line)
+
+      expect(result).toEqual(null)
     })
   })
 })
