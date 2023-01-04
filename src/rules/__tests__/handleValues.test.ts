@@ -68,7 +68,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert -168px to -10.5rem',
+        documentation: 'Convert `-168px` to `-10.5rem`',
         label: '-168px 👉 -10.5rem',
         px: '-168px',
         pxValue: -168,
@@ -87,7 +87,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert -10.5rem to -168px',
+        documentation: 'Convert `-10.5rem` to `-168px`',
         label: '-10.5rem 👉 -168px',
         px: '-168px',
         pxValue: -168,

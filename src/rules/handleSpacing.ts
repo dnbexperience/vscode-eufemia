@@ -42,8 +42,8 @@ export const handleSpacing = (): Rule => {
           label,
           documentation: localize(
             'handleSpacing.documentation',
-            `Convert {0}${unit} to {1}`,
-            value,
+            'Convert `{0}` to `{1}`',
+            value + unit,
             toValue,
             conf.rootFontSize
           ),
