@@ -41,8 +41,8 @@ export const handleCalc = (): Rule => {
           label,
           documentation: localize(
             'handleCalc.documentation',
-            `Convert {0}${unit} to {1}`,
-            value,
+            'Convert `{0}` to `{1}`',
+            value + unit,
             toValue,
             conf.rootFontSize
           ),
