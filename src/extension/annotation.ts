@@ -132,8 +132,12 @@ export class LineAnnotation implements Disposable {
     }
 
     const values = line.match(
-      /([.0-9]+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
+      // 1. Match px/rem values, but do skip support for comments, like // 3rem
+      // 2. Match CSS var(--*)
+      // 3. Match JS calc('*')
+      /(?<!\/\/.*)([.0-9]+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
     )
+    // console.log('values', values)
 
     if (!values) {
       return null
@@ -141,17 +145,17 @@ export class LineAnnotation implements Disposable {
 
     const results = values
       .map((text) => {
-        const rule = RULES.filter((w) =>
-          w.hover?.hoverTest?.test(text)
-        ).map((h) => {
-          if (typeof h.hover?.hoverCondition === 'function') {
-            if (!h.hover.hoverCondition(line)) {
+        const rule = RULES.filter((r) =>
+          r.hover?.hoverTest?.test(text)
+        ).map((r) => {
+          if (typeof r.hover?.hoverCondition === 'function') {
+            if (!r.hover.hoverCondition(line)) {
               return null
             }
           }
 
-          if (typeof h.hover?.hoverHandler === 'function') {
-            return h.hover.hoverHandler(text, line)
+          if (typeof r.hover?.hoverHandler === 'function') {
+            return r.hover.hoverHandler(text, line)
           }
         })
 

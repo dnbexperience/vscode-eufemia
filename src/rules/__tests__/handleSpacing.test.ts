@@ -68,7 +68,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert 10.5px to var(--spacing-x-small)',
+        documentation: 'Convert `10.5px` to `var(--spacing-x-small)`',
         label: '10.5px 👉 var(--spacing-x-small)',
         px: '10.5px',
         pxValue: 10.5,
@@ -88,7 +88,7 @@ describe('convert', () => {
 
       expect(result).toEqual({
         documentation:
-          'Convert 10.5rem to calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))',
+          'Convert `10.5rem` to `calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))`',
         label:
           '10.5rem 👉 calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))',
         px: '168px',
@@ -109,7 +109,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert 1rem to var(--spacing-small)',
+        documentation: 'Convert `1rem` to `var(--spacing-small)`',
         label: '1rem 👉 var(--spacing-small)',
         px: '16px',
         pxValue: 16,
@@ -158,17 +158,30 @@ describe('hover', () => {
   })
 
   describe('hoverHandler', () => {
-    it('should show many spacing types inside calc', () => {
+    it('should summarize several spacing types inside calc', () => {
       const rule = handleSpacing()
       const text =
-        'calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))'
+        'calc(var(--spacing-xx-large) + var(--spacing-medium) + var(--spacing-small))'
       const line = `margin-top: ${text};`
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `10.5`',
-        from: 'calc(var(--spacing-xx-large) + var(--spacing-xx-large) + var(--spacing-xx-large))',
-        to: '10.5rem (168px)',
+        from: 'calc(var(--spacing-xx-large) + var(--spacing-medium) + var(--spacing-small))',
+        to: '6rem (96px)',
+        type: 'handleSpacing',
+      })
+    })
+
+    it('should summarize several spacing types inside calc', () => {
+      const rule = handleSpacing()
+      const text =
+        'calc(var(--spacing-xx-large) - var(--spacing-medum) + var(--spacing-small))'
+      const line = `margin-top: ${text};`
+      const result = rule.hover?.hoverHandler?.(text, line)
+
+      expect(result).toEqual({
+        from: 'calc(var(--spacing-xx-large) - var(--spacing-medum) + var(--spacing-small))',
+        to: '4.5rem (72px)',
         type: 'handleSpacing',
       })
     })
@@ -180,7 +193,6 @@ describe('hover', () => {
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `3.5`',
         from: 'var(--spacing-xx-large)',
         to: '3.5rem (56px)',
         type: 'handleSpacing',

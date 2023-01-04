@@ -24,7 +24,7 @@ describe('convert', () => {
   describe('singleTest', () => {
     it('should match on px number', () => {
       const rule = handleValues()
-      expect('-10.5px').toMatch(rule.convert?.singleTest || '')
+      expect('-168px').toMatch(rule.convert?.singleTest || '')
     })
 
     it('should match on rem number', () => {
@@ -41,7 +41,7 @@ describe('convert', () => {
   describe('allTest', () => {
     it('should match on px number', () => {
       const rule = handleValues()
-      expect('-10.5px +10.5px').toMatch(rule.convert?.allTest || '')
+      expect('-168px +10.5px').toMatch(rule.convert?.allTest || '')
     })
 
     it('should match on rem number', () => {
@@ -63,20 +63,20 @@ describe('convert', () => {
   describe('convertHandler', () => {
     it('should convert px to rem', () => {
       const rule = handleValues()
-      const text = '-10.5px'
+      const text = '-168px'
       const line = `margin-top: ${text};`
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert -10.5px to -0.656rem',
-        label: '-10.5px 👉 -0.656rem',
-        px: '-10.5px',
-        pxValue: -10.5,
-        rem: '-0.656rem',
-        remValue: -0.656,
-        text: '-10.5px',
+        documentation: 'Convert `-168px` to `-10.5rem`',
+        label: '-168px 👉 -10.5rem',
+        px: '-168px',
+        pxValue: -168,
+        rem: '-10.5rem',
+        remValue: -10.5,
+        text: '-168px',
         type: 'handleValues',
-        value: '-0.656rem',
+        value: '-10.5rem',
       })
     })
 
@@ -87,7 +87,7 @@ describe('convert', () => {
       const result = rule.convert?.convertHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Convert -10.5rem to -168px',
+        documentation: 'Convert `-10.5rem` to `-168px`',
         label: '-10.5rem 👉 -168px',
         px: '-168px',
         pxValue: -168,
@@ -105,7 +105,7 @@ describe('hover', () => {
   describe('hoverTest', () => {
     it('should match on px number', () => {
       const rule = handleValues()
-      expect('-10.5px').toMatch(rule.hover?.hoverTest || '')
+      expect('-168px').toMatch(rule.hover?.hoverTest || '')
     })
 
     it('should match on rem number', () => {
@@ -127,19 +127,24 @@ describe('hover', () => {
       const rule = handleValues()
       expect('-10.5vh').not.toMatch(rule.hover?.hoverTest || '')
     })
+
+    it('should not match when comment', () => {
+      const rule = handleValues()
+      expect('// -10.5rem').not.toMatch(rule.hover?.hoverTest || '')
+    })
   })
 
   describe('hoverHandler', () => {
     it('should show px to rem', () => {
       const rule = handleValues()
-      const text = '-10.5px'
+      const text = '-168px'
       const line = `margin-top: ${text};`
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `-10.5px`',
-        from: '-10.5px',
-        to: '-0.656rem',
+        documentation: 'Equivalent to `-10.5rem`',
+        from: '-168px',
+        to: '-10.5rem',
         type: 'handleValues',
       })
     })
@@ -151,7 +156,21 @@ describe('hover', () => {
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `-10.5rem`',
+        documentation: 'Equivalent to `-168px`',
+        from: '-10.5rem',
+        to: '-168px',
+        type: 'handleValues',
+      })
+    })
+
+    it('should not include comments (//)', () => {
+      const rule = handleValues()
+      const text = '-10.5rem'
+      const line = `margin-top: ${text}; // -168px`
+      const result = rule.hover?.hoverHandler?.(text, line)
+
+      expect(result).toEqual({
+        documentation: 'Equivalent to `-168px`',
         from: '-10.5rem',
         to: '-168px',
         type: 'handleValues',

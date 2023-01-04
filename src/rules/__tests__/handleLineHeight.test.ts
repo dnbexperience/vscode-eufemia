@@ -184,7 +184,7 @@ describe('hover', () => {
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual({
-        documentation: 'Converted from `2.5`',
+        documentation: 'Equivalent to `2.5`',
         from: 'var(--line-height-large)',
         to: '2.5rem (40px)',
         type: 'handleLineHeight',

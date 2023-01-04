@@ -39,22 +39,22 @@ export default class implements HoverProvider {
       return null
     }
 
-    let results = RULES.filter((w) => w?.hover?.hoverTest?.test(text))
-      .map((rule) => {
-        if (typeof rule.hover?.hoverCondition === 'function') {
-          if (!rule.hover.hoverCondition(line)) {
+    let results = RULES.filter((r) => r?.hover?.hoverTest?.test(text))
+      .map((r) => {
+        if (typeof r.hover?.hoverCondition === 'function') {
+          if (!r.hover.hoverCondition(line)) {
             return null
           }
         }
 
-        if (typeof rule.hover?.hoverHandler === 'function') {
-          return rule.hover.hoverHandler(text, line)
+        if (typeof r.hover?.hoverHandler === 'function') {
+          return r.hover.hoverHandler(text, line)
         }
       })
-      .filter((h) => h !== null && h?.documentation)
+      .filter((r) => r !== null && r?.documentation)
 
     if (conf.hover === 'onlyMark') {
-      results = results.filter((w) => !line.includes(`/* ${w?.type} */`))
+      results = results.filter((r) => !line.includes(`/* ${r?.type} */`))
     }
 
     if (results.length === 0) {

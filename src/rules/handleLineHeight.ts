@@ -36,8 +36,8 @@ export const handleLineHeight = (): Rule => {
           label,
           documentation: localize(
             'handleLineHeight.documentation',
-            `Convert \`{0}${unit}\` to \`{1}\``,
-            fromValue,
+            'Convert `{0}` to `{1}`',
+            fromValue + unit,
             toValue,
             conf.rootFontSize
           ),
@@ -69,7 +69,7 @@ export const handleLineHeight = (): Rule => {
           to: `${rem}rem (${px}px)`,
           documentation: localize(
             'handleLineHeight.documentation.hover',
-            'Converted from `{0}`',
+            'Equivalent to `{0}`',
             rem,
             conf.rootFontSize
           ),
