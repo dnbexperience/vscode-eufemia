@@ -10,7 +10,7 @@ When inside files like: CSS, SCSS, Emotion or Styled Components.
 
 ### Spacing types
 
-Spacing types are Eufemia spatial system units like; large, medium, small. They can and should be used when defining spacing between components:
+Spacing types are [Eufemia spatial system](https://eufemia.dnb.no/uilib/usage/layout/spacing/) units like; large, medium, small. They can and should be used when defining spacing between components:
 
 ```css
 div {
@@ -37,6 +37,6 @@ div {
 ```css
 span {
   font-size: var(--font-size-basis); /* 1.125rem (18px) */
-  line-height: var(--line-height-basis); /* 1.125rem (18px) */
+  line-height: var(--line-height-basis); /* 1.5rem (24px) */
 }
 ```
