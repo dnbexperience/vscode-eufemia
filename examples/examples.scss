@@ -10,7 +10,7 @@ body {
   --spacing-xx-large: 8px;
 
   --font-size-xx-large: 3rem; // 48px
-  --font-size-xx-large: 48px; // 3rem
+  --font-size-xx-large: var(--font-size-xx-large); // 3rem
 
   margin-top: 1rem;
   margin-bottom: 16px;

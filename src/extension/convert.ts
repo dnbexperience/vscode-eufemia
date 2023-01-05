@@ -1,4 +1,4 @@
-import { ConvertResult, Line, Rule, RuleOPType, Type } from './types'
+import type { ConvertResult, Line, Rule, RuleOPType, Type } from './types'
 import { RULES } from '../rules'
 import { Position, Range, Selection, TextEditor } from 'vscode'
 import { isIngore } from './helpers'

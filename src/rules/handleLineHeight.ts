@@ -46,7 +46,7 @@ export const handleLineHeight = (): Rule => {
     },
     hover: {
       hoverTest: new RegExp(`var\\(${varId}([^)]*)\\)`),
-      hoverCondition: (line) => new RegExp(typeId + ':').test(line),
+      hoverCondition: (line) => new RegExp(typeId).test(line),
       hoverHandler: (text) => {
         let remVal = 0
 

@@ -11,7 +11,7 @@ import {
   window,
 } from 'vscode'
 import { conf, isIngore } from './helpers'
-import { HoverResult, Line } from './types'
+import type { HoverResult, Line } from './types'
 import { RULES } from '../rules'
 
 const annotationDecoration = window.createTextEditorDecorationType({
@@ -93,6 +93,7 @@ export class LineAnnotation implements Disposable {
 
     const l = selection.active
     const message = this.genMessage(editor.document, l)
+
     if (!message) {
       this.clear(this._editor)
       return
@@ -137,7 +138,6 @@ export class LineAnnotation implements Disposable {
       // 3. Match JS calc('*')
       /(?<!\/\/.*)([.0-9]+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
     )
-    // console.log('values', values)
 
     if (!values) {
       return null
@@ -145,7 +145,7 @@ export class LineAnnotation implements Disposable {
 
     const results = values
       .map((text) => {
-        const rule = RULES.filter((r) =>
+        const rules = RULES.filter((r) =>
           r.hover?.hoverTest?.test(text)
         ).map((r) => {
           if (typeof r.hover?.hoverCondition === 'function') {
@@ -161,24 +161,24 @@ export class LineAnnotation implements Disposable {
 
         return {
           text,
-          rule,
+          rules,
         }
       })
-      .filter((item) => item.rule.length > 0 && item.rule[0])
+      .filter((item) => item.rules.length > 0 && item.rules[0])
 
     if (results.length <= 0) {
       return null
     }
 
     if (results.length === 1) {
-      const rule = results[0].rule as HoverResult[]
-      return this.genMessageItem(rule)
+      const rules = results[0].rules as HoverResult[]
+      return this.genMessageItem(rules)
     }
 
     return results
       .map((res) => {
-        const rule = res.rule as HoverResult[]
-        return this.genMessageItem(rule)
+        const rules = res.rules as HoverResult[]
+        return this.genMessageItem(rules)
       })
       .join(', ')
   }
@@ -189,10 +189,10 @@ export class LineAnnotation implements Disposable {
     }
 
     return (
-      `${rules[0].to}👉${rules[0].from}(` +
+      `${rules[0].to} 👉 ${rules[0].from}(` +
       rules
         .slice(1)
-        .map((v) => `${v.to}👉${v.from}`)
+        .map((v) => `${v.to} 👉 ${v.from}`)
         .join(',') +
       ')'
     )

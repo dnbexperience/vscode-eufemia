@@ -1,16 +1,10 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { handleLineHeight } from '../handleLineHeight'
-import { loadConfig } from '../../extension/helpers'
-
-const config = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../.eufemia'), 'utf-8')
-)
+import { getConfig, loadConfig } from '../../extension/helpers'
 
 vi.mock('vscode', () => {
   const workspace = {
-    getConfiguration: () => config,
+    getConfiguration: () => getConfig(),
   }
 
   return { workspace }
@@ -72,6 +66,13 @@ describe('convert', () => {
       const rule = handleLineHeight()
       const line = 'line-height: 10.5rem;'
       const result = rule.convert?.convertCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
+    it('should match on CSS var', () => {
+      const rule = handleLineHeight()
+      const line = '--line-height-xx-large: 10.5rem;'
+      const result = rule.hover?.hoverCondition?.(line)
       expect(result).toBeTruthy()
     })
 

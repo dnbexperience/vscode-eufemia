@@ -1,12 +1,12 @@
 import * as nls from 'vscode-nls'
 import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
-import { join } from 'path'
+import { join, resolve } from 'path'
 import { Uri, workspace } from 'vscode'
-import { Config } from './types'
+import type { Config } from './types'
 
 export let conf!: Config
-export const eufemiaConfigFileName = '.eufemia'
+export const eufemiaConfigFileName = '.vscode-eufemia.json'
 
 export const localize = nls.config({
   messageFormat: nls.MessageFormat.both,
@@ -60,32 +60,25 @@ function initIngores() {
 
 function initLanguages() {
   if (!Array.isArray(conf.languages)) {
-    conf.languages = []
+    conf.languages = getConfig().languages
   }
-  if (conf.languages.length > 0) {
-    return
-  }
-  conf.languages = [
-    'css',
-    'scss',
-    'sass',
-    'javascriptreact',
-    'typescriptreact',
-    'javascript',
-    'typescript',
-  ]
 }
 
-export function loadConfig() {
-  conf = { ...(workspace.getConfiguration('eufemia') as any) }
+function setConfig() {
+  const tmp = { ...workspace.getConfiguration('eufemia') }
 
-  Object.keys(conf).forEach((key) => {
-    const cur = conf as any
-    if (typeof cur[key] === 'function') {
-      delete cur[key]
+  Object.keys(tmp).forEach((key) => {
+    const k = key
+    if (typeof tmp[k] === 'function') {
+      delete tmp[k]
     }
   })
 
+  conf = tmp as unknown as Config
+}
+
+export function loadConfig() {
+  setConfig()
   loadConfigViaFile()
   initIngores()
   initLanguages()
@@ -143,4 +136,25 @@ export function cleanProperties(
     },
     {}
   )
+}
+
+type ValueOf<T> = T[keyof T]
+type ConfigKey = keyof Config
+type ConfigItemValue = { default: ValueOf<Config> }
+type ConfigItem = [ConfigKey, ConfigItemValue]
+type ConfigItems = ConfigItem[]
+type Accumulator = Record<ConfigKey, ValueOf<Config>>
+
+export function getConfig() {
+  const items = Object.entries(
+    JSON.parse(
+      readFileSync(resolve(__dirname, '../../package.json'), 'utf-8')
+    ).contributes.configuration.properties
+  ) as ConfigItems
+
+  return items.reduce((acc, [name, value]) => {
+    const key = name.replace('eufemia.', '') as ConfigKey
+    acc[key] = value.default
+    return acc
+  }, {} as Accumulator) as Config
 }

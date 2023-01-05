@@ -1,16 +1,10 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { handleSpacing } from '../handleSpacing'
-import { loadConfig } from '../../extension/helpers'
-
-const config = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../.eufemia'), 'utf-8')
-)
+import { getConfig, loadConfig } from '../../extension/helpers'
 
 vi.mock('vscode', () => {
   const workspace = {
-    getConfiguration: () => config,
+    getConfiguration: () => getConfig(),
   }
 
   return { workspace }
@@ -60,6 +54,43 @@ describe('convert', () => {
     })
   })
 
+  describe('convertCondition', () => {
+    it('should match on margin', () => {
+      const rule = handleSpacing()
+      const line = 'margin-top: 10.5px;'
+      const result = rule.convert?.convertCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
+    it('should match on padding', () => {
+      const rule = handleSpacing()
+      const line = 'padding-top: 10.5rem;'
+      const result = rule.convert?.convertCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
+    it('should match on inset', () => {
+      const rule = handleSpacing()
+      const line = 'inset: 10.5rem;'
+      const result = rule.convert?.convertCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
+    it('should match on top', () => {
+      const rule = handleSpacing()
+      const line = 'top: 10.5rem;'
+      const result = rule.convert?.convertCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
+    it('should not match on condition', () => {
+      const rule = handleSpacing()
+      const line = 'font-size: 10.5rem;'
+      const result = rule.convert?.convertCondition?.(line)
+      expect(result).toBeFalsy()
+    })
+  })
+
   describe('convertHandler', () => {
     it('should convert px to spacing', () => {
       const rule = handleSpacing()
@@ -72,8 +103,8 @@ describe('convert', () => {
         label: '10.5px 👉 var(--spacing-x-small)',
         px: '10.5px',
         pxValue: 10.5,
-        rem: '0.656rem',
-        remValue: 0.656,
+        rem: '0.6563rem',
+        remValue: 0.6563,
         text: '10.5px',
         type: 'handleSpacing',
         value: 'var(--spacing-x-small)',

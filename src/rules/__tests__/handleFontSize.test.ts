@@ -1,16 +1,10 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { handleFontSize } from '../handleFontSize'
-import { loadConfig } from '../../extension/helpers'
-
-const config = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../.eufemia'), 'utf-8')
-)
+import { getConfig, loadConfig } from '../../extension/helpers'
 
 vi.mock('vscode', () => {
   const workspace = {
-    getConfiguration: () => config,
+    getConfiguration: () => getConfig(),
   }
 
   return { workspace }
@@ -161,6 +155,13 @@ describe('hover', () => {
     it('should match on rem value', () => {
       const rule = handleFontSize()
       const line = 'font-size: 10.5rem;'
+      const result = rule.hover?.hoverCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
+    it('should match on CSS var', () => {
+      const rule = handleFontSize()
+      const line = '--font-size-xx-large: 10.5rem;'
       const result = rule.hover?.hoverCondition?.(line)
       expect(result).toBeTruthy()
     })
