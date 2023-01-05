@@ -1,16 +1,10 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { handleFontSize } from '../handleFontSize'
-import { loadConfig } from '../../extension/helpers'
-
-const config = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../.eufemia'), 'utf-8')
-)
+import { getConfig, loadConfig } from '../../extension/helpers'
 
 vi.mock('vscode', () => {
   const workspace = {
-    getConfiguration: () => config,
+    getConfiguration: () => getConfig(),
   }
 
   return { workspace }

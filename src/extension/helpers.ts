@@ -1,7 +1,7 @@
 import * as nls from 'vscode-nls'
 import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
-import { join } from 'path'
+import { join, resolve } from 'path'
 import { Uri, workspace } from 'vscode'
 import { Config } from './types'
 
@@ -143,4 +143,25 @@ export function cleanProperties(
     },
     {}
   )
+}
+
+type ValueOf<T> = T[keyof T]
+type ConfigKey = keyof Config
+type ConfigItemValue = { default: ValueOf<Config> }
+type ConfigItem = [ConfigKey, ConfigItemValue]
+type ConfigItems = ConfigItem[]
+type Accumulator = Record<ConfigKey, ValueOf<Config>>
+
+export function getConfig() {
+  const items = Object.entries(
+    JSON.parse(
+      readFileSync(resolve(__dirname, '../../package.json'), 'utf-8')
+    ).contributes.configuration.properties
+  ) as ConfigItems
+
+  return items.reduce((acc, [name, value]) => {
+    const key = name.replace('eufemia.', '') as ConfigKey
+    acc[key] = value.default
+    return acc
+  }, {} as Accumulator) as Config
 }
