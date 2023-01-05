@@ -8,7 +8,7 @@ import {
 } from 'vscode'
 import { conf, isIngore } from './helpers'
 import { RULES } from '../rules'
-import { Line } from './types'
+import type { Line } from './types'
 
 export default class implements HoverProvider {
   private getText(line: string, pos: Position): string {

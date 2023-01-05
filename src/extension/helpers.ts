@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
 import { join, resolve } from 'path'
 import { Uri, workspace } from 'vscode'
-import { Config } from './types'
+import type { Config } from './types'
 
 export let conf!: Config
 export const eufemiaConfigFileName = '.vscode-eufemia.json'

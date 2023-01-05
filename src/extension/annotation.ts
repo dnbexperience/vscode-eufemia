@@ -11,7 +11,7 @@ import {
   window,
 } from 'vscode'
 import { conf, isIngore } from './helpers'
-import { HoverResult, Line } from './types'
+import type { HoverResult, Line } from './types'
 import { RULES } from '../rules'
 
 const annotationDecoration = window.createTextEditorDecorationType({
