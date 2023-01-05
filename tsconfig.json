@@ -6,6 +6,7 @@
     "rootDir": "src",
     "strict": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },

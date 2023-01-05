@@ -29,7 +29,8 @@
     "release": "yarn build && vsce publish",
     "lint": "eslint src --ext ts",
     "test": "vitest run",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "test:types": "tsc --noEmit"
   },
   "activationEvents": [
     "onLanguage:css",
