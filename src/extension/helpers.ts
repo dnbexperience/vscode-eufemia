@@ -6,7 +6,7 @@ import { Uri, workspace } from 'vscode'
 import { Config } from './types'
 
 export let conf!: Config
-export const eufemiaConfigFileName = '.eufemia'
+export const eufemiaConfigFileName = '.vscode-eufemia.json'
 
 export const localize = nls.config({
   messageFormat: nls.MessageFormat.both,
