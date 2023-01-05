@@ -8,11 +8,13 @@ import { handleLineHeight } from './rules/handleLineHeight'
 export const RULES: Rule[] = []
 
 export function initRules() {
-  RULES.push(
-    handleValues(),
-    handleSpacing(),
-    handleCalc(),
-    handleFontSize(),
-    handleLineHeight()
-  )
+  if (RULES.length === 0) {
+    RULES.push(
+      handleValues(),
+      handleSpacing(),
+      handleCalc(),
+      handleFontSize(),
+      handleLineHeight()
+    )
+  }
 }

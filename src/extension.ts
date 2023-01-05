@@ -13,13 +13,10 @@ import { CSSProcessor } from './extension/convert'
 let process: CSSProcessor
 
 export function activate(context: ExtensionContext) {
-  const init = () => {
-    loadConfig()
-    initRules()
-  }
+  loadConfig()
+  initRules()
 
-  init()
-  workspace.onDidChangeConfiguration(init)
+  workspace.onDidChangeConfiguration(loadConfig)
 
   process = new CSSProcessor()
 

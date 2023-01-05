@@ -93,6 +93,7 @@ export class LineAnnotation implements Disposable {
 
     const l = selection.active
     const message = this.genMessage(editor.document, l)
+
     if (!message) {
       this.clear(this._editor)
       return
@@ -144,7 +145,7 @@ export class LineAnnotation implements Disposable {
 
     const results = values
       .map((text) => {
-        const rule = RULES.filter((r) =>
+        const rules = RULES.filter((r) =>
           r.hover?.hoverTest?.test(text)
         ).map((r) => {
           if (typeof r.hover?.hoverCondition === 'function') {
@@ -160,24 +161,24 @@ export class LineAnnotation implements Disposable {
 
         return {
           text,
-          rule,
+          rules,
         }
       })
-      .filter((item) => item.rule.length > 0 && item.rule[0])
+      .filter((item) => item.rules.length > 0 && item.rules[0])
 
     if (results.length <= 0) {
       return null
     }
 
     if (results.length === 1) {
-      const rule = results[0].rule as HoverResult[]
-      return this.genMessageItem(rule)
+      const rules = results[0].rules as HoverResult[]
+      return this.genMessageItem(rules)
     }
 
     return results
       .map((res) => {
-        const rule = res.rule as HoverResult[]
-        return this.genMessageItem(rule)
+        const rules = res.rules as HoverResult[]
+        return this.genMessageItem(rules)
       })
       .join(', ')
   }
