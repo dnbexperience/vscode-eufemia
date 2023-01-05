@@ -40,3 +40,39 @@ span {
   line-height: var(--line-height-basis); /* 1.5rem (24px) */
 }
 ```
+
+## Configuration
+
+You can either change the settings inside your VSCode (`eufemia.x`) or in a config file (`.vscode-eufemia.json`) you commit to your repository. This way, everyone on the team can use the same settings:
+
+```json
+{
+  "rootFontSize": 16,
+  "fixedDigits": 4,
+  "autoRemovePrefixZero": true,
+  "ingoresViaCommand": [],
+  "addMark": false,
+  "hover": "onlyMark",
+  "ingores": [],
+  "languages": [
+    "css",
+    "scss",
+    "sass",
+    "javascriptreact",
+    "typescriptreact",
+    "javascript",
+    "typescript"
+  ],
+  "spacingProperties": [
+    "margin",
+    "padding",
+    "top",
+    "bottom",
+    "left",
+    "right",
+    "inset"
+  ],
+  "currentLine": "show",
+  "remHover": true
+}
+```

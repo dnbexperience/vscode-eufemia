@@ -60,32 +60,25 @@ function initIngores() {
 
 function initLanguages() {
   if (!Array.isArray(conf.languages)) {
-    conf.languages = []
+    conf.languages = getConfig().languages
   }
-  if (conf.languages.length > 0) {
-    return
-  }
-  conf.languages = [
-    'css',
-    'scss',
-    'sass',
-    'javascriptreact',
-    'typescriptreact',
-    'javascript',
-    'typescript',
-  ]
 }
 
-export function loadConfig() {
-  conf = { ...(workspace.getConfiguration('eufemia') as any) }
+function setConfig() {
+  const tmp = { ...workspace.getConfiguration('eufemia') }
 
-  Object.keys(conf).forEach((key) => {
-    const cur = conf as any
-    if (typeof cur[key] === 'function') {
-      delete cur[key]
+  Object.keys(tmp).forEach((key) => {
+    const k = key
+    if (typeof tmp[k] === 'function') {
+      delete tmp[k]
     }
   })
 
+  conf = tmp as unknown as Config
+}
+
+export function loadConfig() {
+  setConfig()
   loadConfigViaFile()
   initIngores()
   initLanguages()

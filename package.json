@@ -112,7 +112,15 @@
         },
         "eufemia.languages": {
           "type": "array",
-          "default": [],
+          "default": [
+            "css",
+            "scss",
+            "sass",
+            "javascriptreact",
+            "typescriptreact",
+            "javascript",
+            "typescript"
+          ],
           "items": {
             "type": "string"
           },
