@@ -69,6 +69,13 @@ describe('convert', () => {
       expect(result).toBeTruthy()
     })
 
+    it('should match on CSS var', () => {
+      const rule = handleLineHeight()
+      const line = '--line-height-xx-large: 10.5rem;'
+      const result = rule.hover?.hoverCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
     it('should not match on condition', () => {
       const rule = handleLineHeight()
       const line = 'margin-top: 10.5rem;'

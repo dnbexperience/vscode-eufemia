@@ -137,7 +137,6 @@ export class LineAnnotation implements Disposable {
       // 3. Match JS calc('*')
       /(?<!\/\/.*)([.0-9]+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
     )
-    // console.log('values', values)
 
     if (!values) {
       return null
@@ -189,10 +188,10 @@ export class LineAnnotation implements Disposable {
     }
 
     return (
-      `${rules[0].to}👉${rules[0].from}(` +
+      `${rules[0].to} 👉 ${rules[0].from}(` +
       rules
         .slice(1)
-        .map((v) => `${v.to}👉${v.from}`)
+        .map((v) => `${v.to} 👉 ${v.from}`)
         .join(',') +
       ')'
     )

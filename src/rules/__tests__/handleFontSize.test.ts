@@ -159,6 +159,13 @@ describe('hover', () => {
       expect(result).toBeTruthy()
     })
 
+    it('should match on CSS var', () => {
+      const rule = handleFontSize()
+      const line = '--font-size-xx-large: 10.5rem;'
+      const result = rule.hover?.hoverCondition?.(line)
+      expect(result).toBeTruthy()
+    })
+
     it('should not match on condition', () => {
       const rule = handleFontSize()
       const line = 'margin-top: 10.5rem;'

@@ -55,7 +55,7 @@ describe('convert', () => {
   })
 
   describe('convertCondition', () => {
-    it.only('should match on margin', () => {
+    it('should match on margin', () => {
       const rule = handleCalc()
       const line = 'margin-top: 10.5px;'
       const result = rule.convert?.convertCondition?.(line)
