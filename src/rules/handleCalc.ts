@@ -26,6 +26,10 @@ export const handleCalc = (): Rule => {
         const unit = isPx ? 'px' : 'rem'
         const value = isPx ? px : rem
         const toValue = calcSpacing(value + unit)
+          .replace(
+            new RegExp('calc\\((.*)\\)'),
+            `${conf.calcMethodName}($1)`
+          )
           .replace(/var\(--spacing-([^)]*)\)/g, "'$1'")
           .replace(/ \+ /g, ', ')
         const label = `${value}${unit} 👉 ${toValue}`
@@ -50,7 +54,9 @@ export const handleCalc = (): Rule => {
       },
     },
     hover: {
-      hoverTest: /calc\(['"\`]([^)]*)\)/,
+      hoverTest: new RegExp(
+        `${conf.calcMethodName}\\\(['"\\\`]([^)]*)\\\)`
+      ),
       hoverHandler: (text) => {
         let remVal = 0
 

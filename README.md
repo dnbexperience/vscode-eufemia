@@ -73,6 +73,6 @@ You can either change the settings inside your VSCode (`eufemia.x`) or in a conf
     "inset"
   ],
   "currentLine": "show",
-  "remHover": true
+  "calcMethodName": "calc"
 }
 ```

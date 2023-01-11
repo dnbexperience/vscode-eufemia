@@ -132,8 +132,7 @@ describe('hover', () => {
     it('should show px to rem', () => {
       const rule = handleValues()
       const text = '-168px'
-      const line = `margin-top: ${text};`
-      const result = rule.hover?.hoverHandler?.(text, line)
+      const result = rule.hover?.hoverHandler?.(text)
 
       expect(result).toEqual({
         documentation: 'Equivalent to `-10.5rem`',
@@ -146,8 +145,7 @@ describe('hover', () => {
     it('should show rem to px', () => {
       const rule = handleValues()
       const text = '-10.5rem'
-      const line = `margin-top: ${text};`
-      const result = rule.hover?.hoverHandler?.(text, line)
+      const result = rule.hover?.hoverHandler?.(text)
 
       expect(result).toEqual({
         documentation: 'Equivalent to `-168px`',
@@ -160,8 +158,7 @@ describe('hover', () => {
     it('should show rem to px with leading zero', () => {
       const rule = handleValues()
       const text = '-0.5rem'
-      const line = `margin-top: ${text};`
-      const result = rule.hover?.hoverHandler?.(text, line)
+      const result = rule.hover?.hoverHandler?.(text)
 
       expect(result).toEqual({
         documentation: 'Equivalent to `-8px`',
@@ -171,11 +168,46 @@ describe('hover', () => {
       })
     })
 
+    it('should handle invalid values', () => {
+      {
+        const rule = handleValues()
+        const text = `'-6rem'`
+        const result = rule.hover?.hoverHandler?.(text)
+
+        expect(result).toEqual({
+          documentation: 'Equivalent to `-96px`',
+          from: '-6rem',
+          to: '-96px',
+          type: 'handleValues',
+        })
+      }
+
+      {
+        const rule = handleValues()
+        const text = `(-96px)`
+        const result = rule.hover?.hoverHandler?.(text)
+
+        expect(result).toEqual({
+          documentation: 'Equivalent to `-6rem`',
+          from: '-96px',
+          to: '-6rem',
+          type: 'handleValues',
+        })
+      }
+
+      {
+        const rule = handleValues()
+        const text = 'x'
+        const result = rule.hover?.hoverHandler?.(text)
+
+        expect(result).toEqual(null)
+      }
+    })
+
     it('should not include comments (//)', () => {
       const rule = handleValues()
-      const text = '-10.5rem'
-      const line = `margin-top: ${text}; // -168px`
-      const result = rule.hover?.hoverHandler?.(text, line)
+      const text = '-10.5rem // -168px'
+      const result = rule.hover?.hoverHandler?.(text)
 
       expect(result).toEqual({
         documentation: 'Equivalent to `-168px`',

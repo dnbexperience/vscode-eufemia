@@ -45,9 +45,22 @@ export const handleValues = (): Rule => {
     },
     hover: {
       hoverTest: /(?<!var.*)(?<!\/\/.*)([-]?[\d.]+)(px|rem)/,
-      hoverHandler: (text, line) => {
-        const isPx = /(?<!\/\/.*)([-]?[\d.]+)p(x)?/.test(line || 'px')
+      hoverHandler: (text) => {
+        const match = text.match(
+          /(([-]?\d+(px|rem))|([-]?\d+\.\d+(px|rem)))/
+        )
+        if (match?.[0]) {
+          text = match?.[0]
+        }
+
         const fromValue = parseFloat(text)
+
+        if (isNaN(fromValue)) {
+          return null
+        }
+
+        const isPx = /(?<!\/\/.*)([-]?[\d.]+)p(x)?/.test(text || 'px')
+
         const rem = +(
           isPx ? fromValue / conf.rootFontSize : fromValue
         ).toFixed(conf.fixedDigits)

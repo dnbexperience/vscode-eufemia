@@ -6,6 +6,7 @@ import {
   cleanZero,
   isSpacing,
   findNearestType,
+  conf,
 } from '../helpers'
 
 vi.mock('vscode', () => {
@@ -118,5 +119,41 @@ describe('findNearestType', () => {
 
   it('should return basis if empty list was given', () => {
     expect(findNearestType(1, {})).toBe('basis')
+  })
+})
+
+describe('loadConfig', () => {
+  loadConfig()
+
+  it('should set default config to', () => {
+    expect(conf).toEqual({
+      rootFontSize: 16,
+      fixedDigits: 4,
+      autoRemovePrefixZero: true,
+      ingoresViaCommand: [],
+      addMark: false,
+      hover: 'onlyMark',
+      ingores: [],
+      languages: [
+        'css',
+        'scss',
+        'sass',
+        'javascriptreact',
+        'typescriptreact',
+        'javascript',
+        'typescript',
+      ],
+      spacingProperties: [
+        'margin',
+        'padding',
+        'top',
+        'bottom',
+        'left',
+        'right',
+        'inset',
+      ],
+      currentLine: 'show',
+      calcMethodName: 'calc',
+    })
   })
 })
