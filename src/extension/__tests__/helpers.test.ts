@@ -63,6 +63,16 @@ describe('matchLineWhen', () => {
     expect(match).toEqual(["calc('small', 'large')"])
   })
 
+  it('should not match when comment', () => {
+    expect(matchLineWhen('// 12.5px')).toBeFalsy()
+    expect(matchLineWhen('// 12.5rem')).toBeFalsy()
+    expect(matchLineWhen('// 0.5rem')).toBeFalsy()
+    expect(matchLineWhen('// var(--spacing-large)')).toBeFalsy()
+    expect(
+      matchLineWhen("// margin-bottom: ${calc('small', 'large')};")
+    ).toBeFalsy()
+  })
+
   it('should not match when no number was given', () => {
     const match = matchLineWhen('document.body.removeListener')
     expect(match).toBeFalsy()
