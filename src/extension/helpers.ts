@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
 import { join, resolve } from 'path'
 import { Uri, workspace } from 'vscode'
-import type { Config } from './types'
+import type { Config, Line } from './types'
 
 export let conf!: Config
 export const eufemiaConfigFileName = '.vscode-eufemia.json'
@@ -102,7 +102,7 @@ export function cleanZero(val: number) {
   return val + ''
 }
 
-export function findNearestTypes(
+export function findNearestType(
   size: number,
   list: Record<string, string>,
   initialValue = 'basis'
@@ -157,4 +157,13 @@ export function getConfig() {
     acc[key] = value.default
     return acc
   }, {} as Accumulator) as Config
+}
+
+export function matchLineWhen(line: Line) {
+  return line.match(
+    // 1. Match px/rem values, but do skip support for comments, like // 3rem
+    // 2. Match CSS var(--*)
+    // 3. Match JS calc('*')
+    /(?<!\/\/.*)(\d+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
+  )
 }

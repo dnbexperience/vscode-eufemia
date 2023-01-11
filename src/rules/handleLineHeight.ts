@@ -1,7 +1,7 @@
 import properties from '@dnb/eufemia/style/properties'
 import {
   conf,
-  findNearestTypes,
+  findNearestType,
   localize,
   cleanProperties,
 } from '../extension/helpers'
@@ -24,7 +24,7 @@ export const handleLineHeight = (): Rule => {
         const resultValue = +(
           isPx ? fromValue / conf.rootFontSize : fromValue
         ).toFixed(conf.fixedDigits)
-        const size = findNearestTypes(resultValue, sizes, 'basis')
+        const size = findNearestType(resultValue, sizes, 'basis')
         const toValue = `var(${varId}${size})`
         const unit = isPx ? 'px' : 'rem'
         const label = `${fromValue}${unit} 👉 ${toValue}`

@@ -10,7 +10,7 @@ import {
   ThemeColor,
   window,
 } from 'vscode'
-import { conf, isIngore } from './helpers'
+import { conf, isIngore, matchLineWhen } from './helpers'
 import type { HoverResult, Line } from './types'
 import { RULES } from '../rules'
 
@@ -132,12 +132,7 @@ export class LineAnnotation implements Disposable {
       return null
     }
 
-    const values = line.match(
-      // 1. Match px/rem values, but do skip support for comments, like // 3rem
-      // 2. Match CSS var(--*)
-      // 3. Match JS calc('*')
-      /(?<!\/\/.*)([.0-9]+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
-    )
+    const values = matchLineWhen(line)
 
     if (!values) {
       return null
