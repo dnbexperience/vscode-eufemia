@@ -76,6 +76,10 @@ export const handleSpacing = (): Rule => {
           }
         })
 
+        if (isNaN(remVal)) {
+          return null
+        }
+
         const rem = +remVal.toFixed(conf.fixedDigits)
         const px = +(remVal * conf.rootFontSize).toFixed(conf.fixedDigits)
 

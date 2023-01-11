@@ -47,9 +47,9 @@ export type Config = {
   ingores: string[]
 
   /**
-   * Whether to enable rem hover
+   * Defined the generated "calc('large', 'small)" method name
    */
-  remHover: boolean
+  calcMethodName: string
 
   /**
    * List of CSS properties that are know for spacing

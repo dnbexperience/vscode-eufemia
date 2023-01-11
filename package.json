@@ -156,10 +156,10 @@
           ],
           "description": "%eufemia.currentLine%"
         },
-        "eufemia.remHover": {
-          "type": "boolean",
-          "default": true,
-          "description": "%eufemia.remHover%"
+        "eufemia.calcMethodName": {
+          "type": "string",
+          "default": "calc",
+          "description": "%eufemia.calcMethodName%"
         }
       }
     },

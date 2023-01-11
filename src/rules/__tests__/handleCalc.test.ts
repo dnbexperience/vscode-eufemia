@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { handleCalc } from '../handleCalc'
-import { getConfig, loadConfig } from '../../extension/helpers'
+import { conf, getConfig, loadConfig } from '../../extension/helpers'
 
 vi.mock('vscode', () => {
   const workspace = {
@@ -131,22 +131,27 @@ describe('convert', () => {
       })
     })
 
-    it('should result in var only', () => {
+    it('should use calcMethodName config', () => {
+      const tmp = conf.calcMethodName
+      conf.calcMethodName = 'newName'
+
       const rule = handleCalc()
       const text = '1rem'
       const line = `margin-top: ${text};`
       const result = rule.convert?.convertHandler?.(text, line)
 
+      conf.calcMethodName = tmp
+
       expect(result).toEqual({
-        documentation: "Convert `1rem` to `calc('small')`",
-        label: "1rem 👉 calc('small')",
+        documentation: "Convert `1rem` to `newName('small')`",
+        label: "1rem 👉 newName('small')",
         px: '16px',
         pxValue: 16,
         rem: '1rem',
         remValue: 1,
         text: '1rem',
         type: 'handleCalc',
-        value: "calc('small')",
+        value: "newName('small')",
       })
     })
   })
@@ -201,6 +206,19 @@ describe('hover', () => {
       const result = rule.hover?.hoverHandler?.(text, line)
 
       expect(result).toEqual(null)
+    })
+
+    it('should be able to use other method name than calc', () => {
+      const rule = handleCalc()
+      const text = `newName('large', 'large', 'large')`
+      const line = `margin-top: ${text};`
+      const result = rule.hover?.hoverHandler?.(text, line)
+
+      expect(result).toEqual({
+        from: "newName('large', 'large', 'large')",
+        to: '6rem (96px)',
+        type: 'handleCalc',
+      })
     })
   })
 })
