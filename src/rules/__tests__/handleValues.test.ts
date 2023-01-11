@@ -157,6 +157,20 @@ describe('hover', () => {
       })
     })
 
+    it('should show rem to px with leading zero', () => {
+      const rule = handleValues()
+      const text = '-0.5rem'
+      const line = `margin-top: ${text};`
+      const result = rule.hover?.hoverHandler?.(text, line)
+
+      expect(result).toEqual({
+        documentation: 'Equivalent to `-8px`',
+        from: '-0.5rem',
+        to: '-8px',
+        type: 'handleValues',
+      })
+    })
+
     it('should not include comments (//)', () => {
       const rule = handleValues()
       const text = '-10.5rem'

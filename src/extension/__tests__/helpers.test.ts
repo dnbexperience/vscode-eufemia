@@ -22,33 +22,50 @@ beforeAll(() => {
 
 describe('matchLineWhen', () => {
   it('should match on px', () => {
-    expect(matchLineWhen('12.5px')).toBeTruthy()
+    const match = matchLineWhen('12.5px')
+    expect(match).toBeTruthy()
+    expect(match).toEqual(['12.5px'])
   })
 
   it('should match on rem', () => {
-    expect(matchLineWhen('12.5rem')).toBeTruthy()
+    const match = matchLineWhen('12.5rem')
+    expect(match).toBeTruthy()
+    expect(match).toEqual(['12.5rem'])
+  })
+
+  it('should match wtih leading zero', () => {
+    const match = matchLineWhen('0.5rem')
+    expect(match).toBeTruthy()
+    expect(match).toEqual(['0.5rem'])
   })
 
   it('should match on var', () => {
-    expect(matchLineWhen('var(--spacing-large)')).toBeTruthy()
+    const match = matchLineWhen('var(--spacing-large)')
+    expect(match).toBeTruthy()
+    expect(match).toEqual(['var(--spacing-large)'])
   })
 
   it('should not match on var only', () => {
-    expect(matchLineWhen('var')).toBeFalsy()
+    const match = matchLineWhen('var')
+    expect(match).toBeFalsy()
   })
 
   it('should not match on calc only', () => {
-    expect(matchLineWhen('calc')).toBeFalsy()
+    const match = matchLineWhen('calc')
+    expect(match).toBeFalsy()
   })
 
   it('should match on calc', () => {
-    expect(
-      matchLineWhen("margin-bottom: ${calc('small', 'large')};")
-    ).toBeTruthy()
+    const match = matchLineWhen(
+      "margin-bottom: ${calc('small', 'large')};"
+    )
+    expect(match).toBeTruthy()
+    expect(match).toEqual(["calc('small', 'large')"])
   })
 
   it('should not match when no number was given', () => {
-    expect(matchLineWhen('document.body.removeListener')).toBeFalsy()
+    const match = matchLineWhen('document.body.removeListener')
+    expect(match).toBeFalsy()
   })
 })
 

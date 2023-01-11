@@ -161,9 +161,11 @@ export function getConfig() {
 
 export function matchLineWhen(line: Line) {
   return line.match(
-    // 1. Match px/rem values, but do skip support for comments, like // 3rem
-    // 2. Match CSS var(--*)
-    // 3. Match JS calc('*')
-    /(?<!\/\/.*)(\d+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
+    // 1. Do skip support for comments, like // 3rem
+    // 2. Match px/rem values like "5rem"
+    // 3. Match px/rem values, like "0.5rem" or ".5rem"
+    // 4. Match CSS var(--*)
+    // 5. Match JS calc('*')
+    /(?<!\/\/.*)(\d+(px|rem))|(\d{0,}.\d+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
   )
 }
