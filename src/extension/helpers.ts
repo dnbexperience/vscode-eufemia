@@ -166,6 +166,6 @@ export function matchLineWhen(line: Line) {
     // 3. Match px/rem values, like "0.5rem" or ".5rem"
     // 4. Match CSS var(--*)
     // 5. Match JS calc('*')
-    /(?<!\/\/.*)(\d+(px|rem))|(\d{0,}.\d+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\)/g
+    /(?<!\/\/.*)((\d+(px|rem))|(\d{0,}.\d+(px|rem))|var\(--(.*)\)|calc\(['"\`](.*)\))/g
   )
 }
