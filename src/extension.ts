@@ -1,24 +1,17 @@
-import { commands, ExtensionContext, languages, workspace } from 'vscode'
+import { commands, languages } from 'vscode'
 import CssRemProvider from './extension/completion'
-import {
-  conf,
-  eufemiaConfigFileName,
-  loadConfig,
-} from './extension/helpers'
+import { conf, initConfig } from './extension/helpers'
 import { initRules } from './rules'
 import CssRemHoverProvider from './extension/hover'
 import { LineAnnotation } from './extension/annotation'
 import { CSSProcessor } from './extension/convert'
-
-let process: CSSProcessor
+import type { ExtensionContext } from 'vscode'
 
 export function activate(context: ExtensionContext) {
-  loadConfig()
+  initConfig(context)
   initRules()
 
-  workspace.onDidChangeConfiguration(loadConfig)
-
-  process = new CSSProcessor()
+  let process = new CSSProcessor()
 
   const syntaxLanguages = [...conf.languages]
   for (const lang of syntaxLanguages) {
@@ -28,6 +21,7 @@ export function activate(context: ExtensionContext) {
     )
     context.subscriptions.push(providerDisposable)
   }
+
   if (conf.hover !== 'disabled') {
     const hoverProvider = new CssRemHoverProvider()
     context.subscriptions.push(
@@ -71,16 +65,6 @@ export function activate(context: ExtensionContext) {
   if (conf.currentLine !== 'disabled') {
     context.subscriptions.push(new LineAnnotation())
   }
-
-  const eufemiaConfigWatcher = workspace.createFileSystemWatcher(
-    `**/${eufemiaConfigFileName}`
-  )
-
-  eufemiaConfigWatcher.onDidChange(loadConfig)
-  eufemiaConfigWatcher.onDidCreate(loadConfig)
-  eufemiaConfigWatcher.onDidDelete(loadConfig)
-
-  context.subscriptions.push(eufemiaConfigWatcher)
 }
 
 export function deactivate() {}

@@ -1,44 +1,62 @@
 import * as nls from 'vscode-nls'
+import { Uri, workspace, window } from 'vscode'
 import { existsSync, readFileSync } from 'fs'
 import { parse } from 'jsonc-parser'
-import { join, resolve } from 'path'
-import { Uri, workspace } from 'vscode'
+import { join, resolve, dirname } from 'path'
+import type { ExtensionContext } from 'vscode'
 import type { Config, Line } from './types'
 
 export let conf!: Config
-export const eufemiaConfigFileName = '.vscode-eufemia.json'
+export const configFileName = '.vscode-eufemia.json'
 
 export const localize = nls.config({
   messageFormat: nls.MessageFormat.both,
 })()
 
-function loadConfigViaFile() {
-  if (
-    !workspace.workspaceFolders ||
-    workspace.workspaceFolders?.length <= 0
-  ) {
-    return
-  }
+let CACHE_CONFIG_DIR_PATH: Record<string, string | null> = {}
 
-  const eufemiaConfigPath = join(
-    workspace.workspaceFolders[0].uri.fsPath,
-    eufemiaConfigFileName
+export function loadConfigFromFile() {
+  const activeFilePath = dirname(
+    window.activeTextEditor?.document.fileName || ''
   )
 
-  if (!existsSync(eufemiaConfigPath)) {
-    console.warn(`File not found: ${eufemiaConfigPath}`)
-    return
+  let configDirPath = (CACHE_CONFIG_DIR_PATH?.[activeFilePath] ||
+    null) as string
+
+  if (!configDirPath && activeFilePath) {
+    const paths = activeFilePath.split(/\/+|\\+/g)
+
+    for (let i = 0, l = paths.length; i < l; i++) {
+      const path = resolve(...paths)
+
+      if (
+        existsSync(join(path, configFileName)) ||
+        // Skip on package.json too, so we not always run this on every file over again (when in same directory)
+        existsSync(join(path, 'package.json'))
+      ) {
+        configDirPath = CACHE_CONFIG_DIR_PATH[activeFilePath] = path
+        break
+      }
+
+      paths.pop()
+    }
+  }
+
+  const configFilePath = join(configDirPath, configFileName)
+
+  if (!existsSync(configFilePath)) {
+    return // stop here
   }
 
   try {
-    const res = parse(readFileSync(eufemiaConfigPath).toString('utf-8'))
+    const res = parse(readFileSync(configFilePath, 'utf-8'))
     conf = {
       ...conf,
       ...res,
     }
-    console.warn(`Use override config via ${eufemiaConfigPath} file`)
-  } catch (ex) {
-    console.warn(`Parse error in ${eufemiaConfigPath}`, ex)
+    console.info(`Using config from file: ${configFilePath}`)
+  } catch (e) {
+    console.warn(`Parse error in ${configFilePath}`, e)
   }
 }
 
@@ -77,9 +95,25 @@ function setConfig() {
   conf = tmp as unknown as Config
 }
 
+export function initConfig(context: ExtensionContext) {
+  loadConfig()
+
+  workspace.onDidChangeConfiguration(loadConfig)
+  workspace.onDidOpenTextDocument(loadConfigFromFile)
+
+  const configWatcher = workspace.createFileSystemWatcher(
+    `**/${configFileName}`
+  )
+
+  configWatcher.onDidChange(loadConfig)
+  configWatcher.onDidCreate(loadConfig)
+  configWatcher.onDidDelete(loadConfig)
+
+  context.subscriptions.push(configWatcher)
+}
+
 export function loadConfig() {
   setConfig()
-  loadConfigViaFile()
   initIngores()
   initLanguages()
 }
