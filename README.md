@@ -43,7 +43,7 @@ span {
 
 ## Configuration
 
-You can either change the settings inside your VSCode (`eufemia.x`) or in a config file (`.vscode-eufemia.json`) you commit to your repository. This way, everyone on the team can use the same settings:
+You can either change the settings inside your VSCode (`eufemia.x`) or in a config file (`.vscode-eufemia.json`) you commit to your repository. The config file can be placed on every relative directory level (mono-repo support). This way, everyone on the team can use the same settings. Above the default options:
 
 ```json
 {
@@ -52,7 +52,7 @@ You can either change the settings inside your VSCode (`eufemia.x`) or in a conf
   "autoRemovePrefixZero": true,
   "ingoresViaCommand": [],
   "addMark": false,
-  "hover": "onlyMark",
+  "hover": "onlyMark" /* disabled | always | onlyMark */,
   "ingores": [],
   "languages": [
     "css",
@@ -72,7 +72,7 @@ You can either change the settings inside your VSCode (`eufemia.x`) or in a conf
     "right",
     "inset"
   ],
-  "currentLine": "show",
+  "currentLine": "show" /* disabled | show */,
   "calcMethodName": "calc"
 }
 ```
