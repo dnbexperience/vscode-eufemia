@@ -45,7 +45,7 @@ span {
 
 You can either change the settings inside your VSCode (`eufemia.x`) or in a config file (`.vscode-eufemia.json`) you commit to your repository. The config file can be placed on every relative directory level (mono-repo support). This way, everyone on the team can use the same settings. Above the default options:
 
-```json
+```yaml
 {
   "rootFontSize": 16,
   "fixedDigits": 4,
