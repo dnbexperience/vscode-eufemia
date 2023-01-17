@@ -14,10 +14,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dnb/eufemia@^9.45.0":
-  version "9.45.0"
-  resolved "https://registry.yarnpkg.com/@dnb/eufemia/-/eufemia-9.45.0.tgz#0d85272ce84c25189f4ce99b6fd9fe140dc80083"
-  integrity sha512-DyVZNOCGIvUoXh3U8w9ynjdEdzFxQQL+hjTvWCYYqw+3NRKpAf/yyDFTwIh/6Y+bZF2Zup8m1JKsHWVxLi5zYA==
+"@dnb/eufemia@^9.46.0":
+  version "9.46.0"
+  resolved "https://registry.yarnpkg.com/@dnb/eufemia/-/eufemia-9.46.0.tgz#917f60e0321f0a332cfefe8e8b7332d97ff68c4a"
+  integrity sha512-BIsG1HV2otIfdpUeoj9Ixd00G/JGD8mivGajvusLu2e9igbW8TnDUvSwRoa4UhWHRoC6nCwaueouXip5TrnT7Q==
   dependencies:
     "@babel/runtime" "7.16.3"
     classnames "2.3.1"
